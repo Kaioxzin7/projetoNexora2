@@ -1,0 +1,2065 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Nexora Digital | Sites, Marketing e Estratégia Digital</title>
+<meta name="description" content="A Nexora Digital cria sites profissionais, estratégias de marketing, tráfego pago e soluções digitais para empresas que querem crescer no digital." />
+<meta property="og:title" content="Nexora Digital | Sites, Marketing e Estratégia Digital" />
+<meta property="og:description" content="A Nexora Digital cria sites profissionais, estratégias de marketing, tráfego pago e soluções digitais para empresas que querem crescer no digital." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="pt_BR" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Nexora Digital | Sites, Marketing e Estratégia Digital" />
+<meta name="twitter:description" content="A Nexora Digital cria sites profissionais, estratégias de marketing, tráfego pago e soluções digitais para empresas que querem crescer no digital." />
+<link rel="icon" href="/favicon.ico" />
+
+<!-- Fonts: Original used Gilroy / Lato / Neue Haas Grotesk (local woff2, not on a free CDN).
+     Substitutes per spec: Lato kept for display/headings; Sora used as the Gilroy substitute
+     ($gilroy -> 'Sora', sans-serif). Neue Haas is unused in rendered sections, ignored. -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;800&family=Sora:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.143.0/build/three.module.js",
+    "three/examples/jsm/": "https://unpkg.com/three@0.143.0/examples/jsm/",
+    "gsap": "https://unpkg.com/gsap@3.12.5/index.js",
+    "lenis": "https://unpkg.com/lenis@1.1.13/dist/lenis.mjs"
+  }
+}
+</script>
+
+<style>
+/* ============================ RESETS / GLOBALS ============================ */
+*, *::after, *::before { box-sizing: border-box; margin: 0; padding: 0; }
+html { overflow-x: hidden; overscroll-behavior-y: none; scrollbar-width: none; -ms-overflow-style: none; }
+html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+body { margin: 0; background: #010101; color: #fff; scrollbar-width: none; -ms-overflow-style: none;
+       font-family: 'Sora', sans-serif; }
+button { cursor: pointer; border: none; background: none; padding: 0; margin: 0; font-family: inherit; }
+button:focus, input:focus { outline: none; }
+ul { list-style: none; padding: 0; margin: 0; }
+a { color: inherit; text-decoration: none; }
+p, h1, h2, h3, h4 { margin: 0; }
+:root { --index: calc(1vw + 1vh); }
+.container { max-width: 1412px; width: 100%; padding: 0 40px; margin: 0 auto; height: 100%; }
+@media (max-width: 1180px) { .container { padding: 0 25px; } }
+@media (max-width: 991px)  { .container { padding: 0 15px; } }
+
+/* Font shorthand helpers used inline below map to:
+   Gilroy -> 'Sora', sans-serif ; Lato -> 'Lato' */
+
+/* ============================ SCENE ============================ */
+.scene {
+  position: fixed; inset: 0; width: 100vw; height: 100vh;
+  height: 100lvh; width: 100lvw;
+  pointer-events: none;
+  transform: translateZ(0); -webkit-transform: translateZ(0);
+  will-change: transform; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.scene canvas { width: 100%; height: 100%; pointer-events: none; transform: translateZ(0); }
+.scene .scene-loader {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  color: #fff; font-family: 'Lucida Sans Unicode','Lucida Grande',Arial,sans-serif;
+  font-size: 1.25rem; line-height: 1; pointer-events: none;
+}
+.scene-overlay {
+  position: fixed; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(0,0,0,0.32) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 58%,
+    rgba(0,0,0,0.38) 82%, rgba(0,0,0,0.72) 100%);
+}
+.controller { width: 100%; position: relative; }
+.controller.-not-loaded .controller-slides,
+.controller.-not-loaded .header,
+.controller.-not-loaded .menu { opacity: 0; visibility: hidden; }
+.controller-slides { position: relative; width: 100%; }
+.slide { position: relative; width: 100%; min-height: 100vh; }
+.slide > * { position: sticky; top: 0; height: 100vh; width: 100%; }
+.header { transition: opacity 1s, visibility 1s; }
+.section { display: flex; align-items: center; flex-direction: column; justify-content: center; height: 100vh; min-height: 100vh; width: 100%; }
+
+.ui-text { max-width: 27.0625em; font: 400 16px/1.5 'Sora', sans-serif; color: #fff; text-align: center; }
+
+/* ============================ HEADER ============================ */
+.header {
+  padding-top: calc(45px + env(safe-area-inset-top,0px));
+  position: fixed; left: 0; top: 0; z-index: 120; width: 100%;
+  transition: opacity 1s, visibility 1s;
+}
+.header__container { display: flex; align-items: center; justify-content: space-between; }
+.header__logo { display: flex; align-items: center; cursor: pointer; }
+.header__logo p { margin-left: 14px; font: 600 16px/1 'Sora', sans-serif; color: #fff; text-transform: uppercase; letter-spacing: .3em; }
+.header__logo-mark {
+  width: 28px; height: 28px; flex-shrink: 0; position: relative; display: inline-block;
+  border: 1.5px solid #9bc26a; border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(22,60,140,.15), 0 0 14px -2px rgba(92,170,255,.35);
+}
+.header__logo-mark::before { content: ''; position: absolute; inset: 4px; border: 1px solid rgba(120,180,255,.9); border-radius: 50%; }
+.header__logo-mark-core {
+  position: absolute; inset: 10px; border-radius: 50%;
+  background: radial-gradient(50% 50% at 50% 50%, #bedeff 0%, #3a5c20 70%, rgba(22,60,140,0) 100%);
+  box-shadow: 0 0 10px rgba(92,170,255,.7);
+}
+.header__nav { padding: 0 82px; flex-grow: 1; display: flex; align-items: center; justify-content: space-between; }
+.header__nav-btn { font: 700 16px/1.19 'Lato'; color: #fff; white-space: nowrap;
+  opacity: 0; visibility: hidden; transform: translateY(15px);
+  transition: .3s transform ease-in, .3s opacity; }
+.header.--nav .header__nav-btn { opacity: 1; visibility: visible; transform: translateY(0); }
+.header__nav-btn span { display: inline-block; transition: transform .3s, opacity .3s; }
+.header__nav-btn:hover span { transform: translateY(-4px); opacity: .5; }
+.header__cta {
+  display: inline-flex; align-items: center; gap: 10px; padding: 11px 22px;
+  border: 1px solid rgba(92,170,255,.45); border-radius: 999px; background: rgba(92,170,255,.06);
+  color: #fff; font: 600 11px/1 'Sora', sans-serif; letter-spacing: .22em; text-transform: uppercase; white-space: nowrap;
+  box-shadow: 0 8px 24px -10px rgba(22,60,140,.35), inset 0 1px 0 rgba(190,222,255,.15);
+  transition: border-color .3s, background .3s, transform .3s, box-shadow .3s;
+}
+.header__cta:hover { border-color: rgba(92,170,255,1); background: rgba(92,170,255,.14); transform: translateY(-1px); }
+.header__cta-arrow { font-size: 14px; color: #bedeff; transform: translateY(-1px); transition: transform .3s; }
+.header__cta:hover .header__cta-arrow { transform: translate(4px,-1px); }
+.header__burgermenu {
+  display: none; width: 44px; height: 44px; position: relative;
+  border: 1px solid rgba(92,170,255,.35); border-radius: 999px; background: rgba(92,170,255,.06);
+  box-shadow: 0 8px 24px -12px rgba(22,60,140,.45), inset 0 1px 0 rgba(190,222,255,.12);
+}
+.header__burgermenu span { width: 18px; height: 1.5px; background: #bedeff; border-radius: 2px; position: absolute; left: 50%; margin-left: -9px; transition: transform .3s, opacity .3s, background .3s, top .3s, width .3s, margin-left .3s; }
+.header__burgermenu span:nth-child(1) { top: 16px; }
+.header__burgermenu span:nth-child(2) { top: 50%; transform: translateY(-50%); width: 12px; margin-left: -6px; }
+.header__burgermenu span:nth-child(3) { top: calc(100% - 16px); }
+.header.--menu-active .header__burgermenu span { background: #fff; }
+.header.--menu-active .header__burgermenu span:nth-child(1) { top: 50%; width: 18px; margin-left: -9px; transform: translateY(-50%) rotate(-45deg); }
+.header.--menu-active .header__burgermenu span:nth-child(2) { transform: translateY(-50%) scaleX(0); opacity: 0; }
+.header.--menu-active .header__burgermenu span:nth-child(3) { top: 50%; width: 18px; margin-left: -9px; transform: translateY(-50%) rotate(45deg); }
+
+@media (max-width: 1151px) { .header__nav { padding: 0 40px; } }
+@media (max-width: 991px)  { .header { padding-top: 30px; } .header__nav { padding: 0 30px; } }
+@media (max-width: 912px)  {
+  .header__nav, .header__btn.header__cta { display: none; }
+  .header__burgermenu { display: block; }
+  .header { padding-top: 22px; }
+  .header__logo p { font-size: 17px; letter-spacing: .34em; }
+  .header__logo-mark { width: 34px; height: 34px; }
+}
+@media (max-width: 480px) {
+  .header { padding-top: 18px; }
+  .header__logo p { font-size: 15px; }
+  .header__logo-mark { width: 30px; height: 30px; }
+  .header__burgermenu { width: 40px; height: 40px; }
+}
+
+/* ============================ HERO ============================ */
+.hero {
+  display: flex; flex-direction: column; justify-content: space-between; align-items: center;
+  padding: 110px 0 64px; text-align: center; position: relative;
+  --content-fade: clamp(0, calc((var(--scene-progress, 1) - 0.55) * 3.2), 1);
+  --content-drift: calc((1 - var(--content-fade)) * -32px);
+}
+.hero__top, .hero__bottom {
+  opacity: var(--content-fade); transform: translateY(var(--content-drift));
+  transition: opacity .25s linear, transform .25s linear; will-change: opacity, transform;
+}
+.hero__top { display: flex; flex-direction: column; align-items: center; margin-top: 2vh; }
+.hero__title { font: 400 168px/1 'Lato'; letter-spacing: .04em; text-transform: uppercase; color: #fff; user-select: none; margin: 0; }
+.hero__title span { display: inline-block; color: #fff; }
+.hero__subtitle { margin-top: 28px; font: 400 22px/1.4 'Sora', sans-serif; color: rgba(255,255,255,.92); max-width: 30ch; }
+.hero__bottom { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.hero__content { display: flex; flex-direction: column; align-items: center; max-width: 600px; width: 100%; padding: 0 24px; }
+.hero__brief { font: 400 15px/1.7 'Sora', sans-serif; color: rgba(255,255,255,.72); margin: 0 0 28px; max-width: 54ch; }
+.hero__cta {
+  display: inline-flex; align-items: center; gap: 14px; padding: 17px 32px;
+  border: 1px solid rgba(92,170,255,.55); border-radius: 999px; background: rgba(92,170,255,.08);
+  color: #fff; font: 600 13px/1 'Sora', sans-serif; letter-spacing: .2em; text-transform: uppercase;
+  box-shadow: 0 12px 36px -10px rgba(22,60,140,.4), inset 0 1px 0 rgba(190,222,255,.25);
+  transition: border-color .35s, background .35s, transform .35s, box-shadow .35s;
+}
+.hero__cta:hover { border-color: rgba(92,170,255,1); background: rgba(92,170,255,.18); transform: translateY(-2px); box-shadow: 0 18px 48px -10px rgba(22,60,140,.55), inset 0 1px 0 rgba(190,222,255,.3); }
+.hero__cta-arrow { font-size: 16px; color: #bedeff; transform: translateY(-1px); transition: transform .35s; }
+.hero__cta:hover .hero__cta-arrow { transform: translate(6px,-1px); }
+.hero__text.ui-text {
+  margin-top: 28px; font: 500 11px/1 'Sora', sans-serif; letter-spacing: .38em; text-transform: uppercase;
+  color: rgba(255,255,255,.42); text-align: center; margin-left: 0;
+}
+/* Hero reveal (HeroAnim) */
+.hero__title, .hero__subtitle, .hero__brief, .hero__cta, .hero__text {
+  will-change: transform, opacity;
+  transition-property: transform, opacity;
+  transition-timing-function: cubic-bezier(.16,.77,.3,1);
+  transition-duration: 1.4s;
+}
+.hero__title  { transform: translateY(40px) scale(.94); opacity: 0; transition-delay: .1s; transition-duration: 1.8s; }
+.hero__subtitle { transform: translateY(28px); opacity: 0; transition-delay: .35s; }
+.hero__brief  { transform: translateY(20px); opacity: 0; transition-delay: .55s; }
+.hero__cta    { transform: translateY(20px); opacity: 0; transition-delay: .75s; }
+.hero__text   { transform: translateY(12px); opacity: 0; transition-delay: .95s; }
+.hero.-appearing .hero__title,
+.hero.-appearing .hero__subtitle,
+.hero.-appearing .hero__brief,
+.hero.-appearing .hero__cta,
+.hero.-appearing .hero__text { transition: none; }
+.slide.-active .hero:not(.-appearing) .hero__title,
+.slide.-active .hero:not(.-appearing) .hero__subtitle,
+.slide.-active .hero:not(.-appearing) .hero__brief,
+.slide.-active .hero:not(.-appearing) .hero__cta,
+.slide.-active .hero:not(.-appearing) .hero__text { transform: none; opacity: 1; }
+
+@media (max-width: 1180px) { .hero__title { font-size: 140px; } }
+@media (max-width: 855px)  {
+  .hero { padding: 110px 0 56px; }
+  .hero__title { font-size: 17vw; }
+  .hero__subtitle { font-size: 18px; max-width: 26ch; }
+  .hero__brief { font-size: 14px; }
+}
+@media (max-width: 656px)  {
+  .hero__cta { padding: 14px 24px; font-size: 12px; }
+  .hero__subtitle { font-size: 16px; margin-top: 22px; }
+  .hero__top { margin-top: 0; }
+}
+@media (max-width: 480px)  {
+  .hero { padding: 96px 0 44px; }
+  .hero__title { font-size: 19vw; letter-spacing: .02em; }
+  .hero__subtitle { font-size: 15px; }
+  .hero__brief { font-size: 13px; line-height: 1.65; }
+  .hero__text.ui-text { font-size: 10px; letter-spacing: .32em; }
+}
+
+/* ============================ SITEMAP ============================ */
+.slide > .sitemap.section { position: static; overflow: hidden; max-height: 100vh; }
+.sitemap__container { display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.sitemap__eyebrow, .sitemap__heading, .sitemap__row_1, .sitemap__row_2, .sitemap__row_3, .sitemap__join {
+  opacity: 0; transform: translate3d(0,36px,0); will-change: opacity, transform;
+}
+.sitemap__intro { text-align: center; margin-bottom: 32px; max-width: 720px; }
+.sitemap__eyebrow { font: 500 11px/1 'Sora', sans-serif; letter-spacing: .34em; text-transform: uppercase; color: rgba(92,170,255,.85); margin-bottom: 14px; }
+.sitemap__heading { font: 400 28px/1.35 'Lato'; color: rgba(255,255,255,.92); letter-spacing: .01em; max-width: 18ch; margin: 0 auto; }
+.sitemap__content { display: flex; flex-direction: column; max-width: 1027px; width: 100%; }
+.sitemap__row { display: flex; align-items: flex-start; justify-content: space-between; }
+.sitemap__row_1 { justify-content: center; }
+.sitemap__row_2 { margin-top: 64px; }
+.sitemap__row_3 { margin: 280px auto 0; max-width: 859px; width: 100%; transform: translateX(-2%); }
+
+.sitemap-btn { display: flex; align-items: center; gap: 16px; background: transparent; border: none; cursor: pointer; padding: 4px 0; transition: transform .35s ease; }
+.sitemap-btn:hover { transform: translateY(-2px); }
+.sitemap-btn:hover .sitemap-btn__index { color: rgba(92,170,255,1); }
+.sitemap-btn:hover .sitemap-btn__title { color: #fff; }
+.sitemap-btn__index { font: 600 11px/1 'Sora', sans-serif; letter-spacing: .28em; color: rgba(92,170,255,.7); position: relative; z-index: 3; min-width: 22px; transition: color .3s; }
+.sitemap-btn__text { display: flex; flex-direction: column; gap: 4px; position: relative; z-index: 3; text-align: left; }
+.sitemap-btn__title { font: 400 22px/1 'Lato'; letter-spacing: .03em; text-transform: uppercase; color: rgba(255,255,255,.9); transition: color .3s; }
+.sitemap-btn__subtitle { font: 400 12px/1.4 'Sora', sans-serif; color: rgba(255,255,255,.45); max-width: 26ch; }
+.sitemap-btn__circle { position: relative; z-index: 2; }
+.sitemap-btn__circle span { display: block; width: 16px; height: 16px; border-radius: 50%;
+  background: radial-gradient(50% 50% at 50% 50%, #ffffff 30%, rgba(120,180,255,0.7) 60%, rgba(22,60,140,0) 100%); }
+.sitemap-btn__circle::before {
+  content: ''; display: block; width: 300px; height: 300px; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%) scale(0.5); z-index: -1;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(127,168,77,0.45) 10%, rgba(127,168,77,0.1) 50%, transparent);
+  background-size: contain !important; opacity: 0;
+  transition: transform .5s ease-out, opacity .5s ease; pointer-events: none; filter: blur(10px);
+}
+.sitemap-btn:hover .sitemap-btn__circle::before { transform: translate(-50%,-50%); opacity: 1; }
+
+.--roadmap { padding-bottom: 50px; flex-direction: column; align-items: center; gap: 14px; }
+.--partners, .--investors { flex-direction: row-reverse; }
+.--partners .sitemap-btn__text, .--investors .sitemap-btn__text { text-align: right; align-items: flex-end; }
+.--partners .sitemap-btn__circle::before, .--investors .sitemap-btn__circle::before {
+  background: radial-gradient(50% 50% at 50% 50%, rgba(92,170,255,0.55) 10%, rgba(22,60,140,0.18) 45%, transparent 90%);
+}
+.--social .sitemap-btn__circle::before, .--product .sitemap-btn__circle::before {
+  background: radial-gradient(50% 50% at 50% 50%, rgba(127,168,77,0.5) 10%, rgba(20,40,80,0.15) 50%, transparent);
+}
+.--investors { margin-top: 0; }
+.--investors .sitemap-btn__circle { margin-left: 42px; transform: translateY(-20%); }
+.--partners { margin-top: 44px; }
+.--partners .sitemap-btn__circle { margin-left: 36px; }
+.--social { margin-top: 8px; }
+.--social .sitemap-btn__circle { margin-right: 40px; transform: translateY(-20%); }
+.--product .sitemap-btn__circle { margin-right: 38px; margin-top: auto; transform: translateY(50%); }
+
+.gray-button__content { display: flex; align-items: center; padding: 9.5px 16.5px; border-radius: 14px; border: 1px solid #fff; background: rgba(255,255,255,0.3); }
+.sitemap__join { display: none; margin-top: 48px; }
+.sitemap__join .gray-button__content {
+  padding: 14px 26px; border-radius: 999px; border: 1px solid rgba(92,170,255,.5); background: rgba(92,170,255,.08);
+  box-shadow: 0 12px 32px -10px rgba(22,60,140,.45), inset 0 1px 0 rgba(190,222,255,.2);
+}
+.sitemap__join .gray-button__content span { font: 600 12px/1 'Sora', sans-serif; letter-spacing: .22em; text-transform: uppercase; color: #fff; }
+
+@media (max-height: 828px) { .sitemap__row_3 { margin-top: 200px; } }
+@media (max-height: 717px) { .sitemap__row_2 { margin-top: 24px; } .sitemap__row_3 { margin-top: 160px; } .sitemap__intro { margin-bottom: 18px; } .sitemap__heading { font-size: 22px; } }
+@media (max-width: 991px) { .sitemap__row_3 { transform: translateX(0); max-width: 95%; } }
+
+@media (max-width: 768px) {
+  .slide > .sitemap.section { max-height: none; min-height: 100vh; overflow: visible; padding: 120px 0 56px; }
+  .sitemap__content {
+    max-width: 480px; margin: 0 auto; transform: none !important;
+    background: linear-gradient(180deg, rgba(3,5,10,.15), rgba(3,5,10,.01));
+    border: 1px solid rgba(92,170,255,.12); border-radius: 16px;
+    backdrop-filter: blur(10px) saturate(120%); -webkit-backdrop-filter: blur(14px) saturate(120%);
+    padding: 6px 16px; opacity: 0; will-change: opacity;
+  }
+  .sitemap__row { display: block; width: 100%; margin: 0 !important; transform: none !important; opacity: 1 !important; }
+  .sitemap__row + .sitemap__row { border-top: 1px solid rgba(92,170,255,.12); }
+  .sitemap__row_1 { order: 1; } .sitemap__row_2 { order: 2; } .sitemap__row_3 { order: 3; }
+  .sitemap__content { display: flex; flex-direction: column; }
+  .sitemap-link {
+    display: grid !important; grid-template-columns: 36px 1fr 16px; align-items: center; gap: 14px;
+    padding: 18px 4px; flex-direction: row !important; position: relative; width: 100%;
+  }
+  .sitemap-link .sitemap-btn__circle { display: none; }
+  .sitemap-link .sitemap-btn__index { font-size: 11px; color: rgba(92,170,255,.8); }
+  .sitemap-link .sitemap-btn__title { font-size: 18px; }
+  .sitemap-link .sitemap-btn__subtitle { font-size: 12px; }
+  .sitemap-link::after { content: '→'; color: rgba(190,222,255,.6); font-size: 16px; transition: transform .3s; grid-column: 3; }
+  .sitemap-link:hover::after { transform: translateX(4px); }
+  .--partners, .--investors { flex-direction: row !important; }
+  .--partners .sitemap-btn__text, .--investors .sitemap-btn__text { text-align: left; align-items: flex-start; }
+  .sitemap__join { display: block; margin: 28px auto 0; }
+}
+@media (max-width: 480px) {
+  .sitemap-link { grid-template-columns: 32px 1fr 14px; }
+  .sitemap-link .sitemap-btn__title { font-size: 17px; }
+}
+@media (max-width: 376px) { .slide > .sitemap.section { padding: 104px 0 44px; } }
+@media (max-width: 360px) { .slide > .sitemap.section { padding: 96px 0 40px; } }
+
+/* ============================ ROADMAP / BRIEF ============================ */
+[data-slide-id="roadmap"] { margin-top: 300px; }
+.slide > .brief.section { position: static; width: 100%; height: auto; min-height: 100%; display: flex; flex-direction: column; align-items: center; padding: 16vh 0 6vh; overflow: visible; }
+.brief__container { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 1180px; padding: 0 32px; gap: 66vh; }
+.brief__chapter { font: 500 11px/1 'Sora', sans-serif; letter-spacing: .34em; text-transform: uppercase; color: rgba(92,170,255,.85); text-align: center; }
+.brief__stage { display: flex; flex-direction: column; gap: 18px; width: 100%; max-width: 560px; }
+.brief__stage:nth-of-type(odd) { align-self: flex-start; align-items: flex-start; text-align: left; }
+.brief__stage:nth-of-type(even) { align-self: flex-end; align-items: flex-end; text-align: right; }
+.brief__num { font: 500 13px/1 'Sora', sans-serif; letter-spacing: .14em; color: #fff; margin: 0 0 4px; display: block; }
+.brief__kicker { font: 600 12px/1 'Sora', sans-serif; letter-spacing: .34em; text-transform: uppercase; color: rgba(92,170,255,.9); margin: 0 0 6px; }
+.brief__heading { font: 400 46px/1.18 'Lato'; letter-spacing: .005em; color: #fff; max-width: 100%; text-wrap: balance; }
+.brief__body { font: 400 16px/1.7 'Sora', sans-serif; color: rgba(255,255,255,.78); margin: 4px 0 0; max-width: 56ch; }
+
+.brief__chapter.brief__reveal { opacity: 0; transform: translateY(20px); transition: opacity .7s cubic-bezier(0.22,1,0.36,1), transform .7s cubic-bezier(0.22,1,0.36,1); }
+.brief__chapter.brief__reveal.-in { opacity: 1; transform: none; }
+.brief__stage .brief__num, .brief__stage .brief__kicker, .brief__stage .brief__body, .brief__stage .brief__word {
+  opacity: 0; transform: translateY(22px); transition: opacity .7s cubic-bezier(0.22,1,0.36,1), transform .7s cubic-bezier(0.22,1,0.36,1);
+}
+.brief__stage .brief__kicker { transition-delay: 140ms; }
+.brief__word { display: inline-block; transition-delay: calc(var(--i,0) * 55ms + 240ms); }
+.brief__stage .brief__body { transition-delay: calc(var(--wc,0) * 55ms + 340ms); }
+.brief__stage.-in .brief__num, .brief__stage.-in .brief__kicker, .brief__stage.-in .brief__body, .brief__stage.-in .brief__word {
+  opacity: 1; transform: none;
+}
+
+@media (max-width: 855px) {
+  [data-slide-id="roadmap"] { margin-top: 200px; }
+  .brief__container { gap: 54vh; padding: 0 22px; }
+  .brief__stage:nth-of-type(odd), .brief__stage:nth-of-type(even) { align-self: flex-start; align-items: flex-start; text-align: left; }
+  .brief__num { font-size: 12px; }
+  .brief__heading { font-size: 32px; line-height: 1.2; }
+  .brief__body { font-size: 14px; }
+}
+@media (max-width: 480px) {
+  [data-slide-id="roadmap"] { margin-top: 140px; }
+  .slide > .brief.section { padding: 12vh 0 8vh; }
+  .brief__container { gap: 42vh; padding: 0 18px; }
+  .brief__chapter { font-size: 10px; }
+  .brief__kicker { font-size: 11px; }
+  .brief__heading { font-size: 26px; }
+  .brief__body { font-size: 13.5px; line-height: 1.65; }
+}
+
+/* ============================ IMPACT ============================ */
+[data-slide-id="impact"] { margin-top: 240px; }
+.impact__container { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 30px; }
+.impact__chapter { font: 500 11px/1 'Sora', sans-serif; letter-spacing: .34em; text-transform: uppercase; color: rgba(92,170,255,.85); }
+.impact__heading { font: 400 42px/1.2 'Lato'; letter-spacing: .005em; color: #fff; max-width: 18ch; text-wrap: balance; }
+.impact__grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; width: 100%; max-width: 980px; margin-top: 14px; }
+.impact__metric { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 4px 8px; }
+.impact__value {
+  font: 300 72px/1 'Lato'; letter-spacing: -.01em; color: #fff; display: inline-flex; align-items: baseline;
+  background: linear-gradient(180deg,#ffffff 0%,#d6ecc2 100%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.impact__suffix { font-size: 28px; font-weight: 400; margin-left: 4px; -webkit-text-fill-color: rgba(92,170,255,.9); }
+.impact__label { font: 400 14px/1.6 'Sora', sans-serif; color: rgba(255,255,255,.72); max-width: 24ch; }
+.impact__foot { font: 400 13px/1.6 'Sora', sans-serif; letter-spacing: .02em; color: rgba(255,255,255,.42); margin: 8px 0 0; }
+.impact__reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(0.22,1,0.36,1), transform .7s cubic-bezier(0.22,1,0.36,1); }
+.impact__reveal.-in { opacity: 1; transform: none; }
+.impact__metric.impact__reveal { transition-delay: calc(var(--i,0) * 110ms + 140ms); }
+
+@media (max-width: 855px) {
+  [data-slide-id="impact"] { margin-top: 180px; }
+  .impact__container { gap: 24px; }
+  .impact__heading { font-size: 30px; }
+  .impact__grid { grid-template-columns: 1fr; max-width: 420px; gap: 34px; }
+  .impact__value { font-size: 60px; }
+  .impact__suffix { font-size: 24px; }
+}
+@media (max-width: 480px) {
+  [data-slide-id="impact"] { margin-top: 130px; }
+  .impact__chapter { font-size: 10px; }
+  .impact__heading { font-size: 25px; }
+  .impact__value { font-size: 52px; }
+  .impact__suffix { font-size: 21px; }
+  .impact__foot { font-size: 12px; }
+}
+
+/* ============================ FOOTER ============================ */
+.footer {
+  position: relative; z-index: 2; width: 100%; margin-top: 60vh; padding: 110px 0 56px;
+  background: linear-gradient(180deg, rgba(2,3,2,0) 0%, rgba(3,4,10,0.86) 26%, #030503 100%);
+}
+.footer::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: min(100%,1412px); height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(92,170,255,.26) 50%, transparent 100%);
+}
+.footer__container { display: flex; flex-direction: column; height: auto; }
+.footer__top { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; padding-bottom: 54px; }
+.footer__wordmark { font: 400 clamp(46px,7vw,92px)/0.9 'Lato'; letter-spacing: .04em; color: #fff; }
+.footer__tagline { font: 400 15px/1.6 'Sora', sans-serif; color: rgba(255,255,255,.56); margin: 18px 0 0; max-width: 34ch; }
+.footer__cta {
+  display: inline-flex; align-items: center; gap: 12px; flex-shrink: 0; padding: 15px 26px;
+  border: 1px solid rgba(255,255,255,.18); border-radius: 100px; color: #fff; font: 500 14px/1 'Sora', sans-serif; letter-spacing: .04em;
+  transition: border-color .3s, background .3s, transform .3s;
+}
+.footer__cta-arrow { color: rgba(92,170,255,.95); transition: transform .3s; }
+.footer__cta:hover { border-color: rgba(92,170,255,.55); background: rgba(92,170,255,.08); }
+.footer__cta:hover .footer__cta-arrow { transform: translateX(4px); }
+.footer__nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 28px 0; border-top: 1px solid rgba(255,255,255,.07); border-bottom: 1px solid rgba(255,255,255,.07); }
+.footer__links { display: flex; flex-wrap: wrap; align-items: center; gap: 28px; }
+.footer__link { font: 400 14px/1 'Sora', sans-serif; letter-spacing: .02em; color: rgba(255,255,255,.6); transition: color .25s; }
+.footer__link:hover { color: #fff; }
+.footer__links--social .footer__link { letter-spacing: .12em; text-transform: uppercase; font-size: 12px; }
+.footer__base { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding-top: 30px; }
+.footer__copy { font: 400 12px/1.5 'Sora', sans-serif; letter-spacing: .04em; color: rgba(255,255,255,.38); }
+.footer__top-btn { font: 500 12px/1 'Sora', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.6); display: inline-flex; align-items: center; gap: 8px; transition: color .25s; }
+.footer__top-btn:hover { color: #fff; }
+.footer__top-btn span { transition: transform .3s; }
+.footer__top-btn:hover span { transform: translateY(-3px); }
+
+@media (max-width: 855px) {
+  .footer { margin-top: 50vh; padding: 80px 0 44px; }
+  .footer__top { flex-direction: column; align-items: flex-start; }
+  .footer__nav { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 480px) {
+  .footer__base { flex-direction: column; align-items: flex-start; }
+  .footer__links { gap: 20px; }
+}
+
+/* ============================ MOBILE MENU ============================ */
+.menu {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(3,5,10,.55); backdrop-filter: blur(30px) saturate(140%); -webkit-backdrop-filter: blur(30px) saturate(140%);
+  opacity: 0; visibility: hidden; transition: opacity .4s, visibility .4s;
+}
+.menu.--active { opacity: 1; visibility: visible; }
+.menu__inner { padding: 120px 28px 48px; max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; height: 100%; }
+.menu__eyebrow { font: 500 11px/1 'Sora', sans-serif; letter-spacing: .34em; text-transform: uppercase; color: rgba(92,170,255,.85); margin: 0 0 28px; }
+.menu__list { border-top: 1px solid rgba(92,170,255,.14); border-bottom: 1px solid rgba(92,170,255,.14); }
+.menu__item {
+  display: grid; grid-template-columns: 44px 1fr auto; align-items: center; width: 100%; padding: 20px 0;
+  border-bottom: 1px solid rgba(92,170,255,.08);
+  opacity: 0; transform: translateY(16px); transition: opacity .5s, transform .5s;
+}
+.menu__item:last-child { border-bottom: none; }
+.menu.--active .menu__item { opacity: 1; transform: none; transition-delay: calc(var(--i) * 60ms + 120ms); }
+.menu__index { font: 500 11px/1 'Sora', sans-serif; letter-spacing: .28em; color: rgba(92,170,255,.7); }
+.menu__name { font: 400 26px/1 'Lato'; text-transform: uppercase; color: rgba(255,255,255,.92); text-align: left; }
+.menu__arrow { color: #bedeff; opacity: .6; }
+.menu__cta { margin-top: auto; }
+.menu__cta .gray-button__content {
+  padding: 15px 26px; border-radius: 999px; border: 1px solid rgba(92,170,255,.5); background: rgba(92,170,255,.08);
+  justify-content: center; box-shadow: 0 12px 32px -10px rgba(22,60,140,.45), inset 0 1px 0 rgba(190,222,255,.2);
+}
+.menu__cta .gray-button__content span { font: 600 12px/1 'Sora', sans-serif; letter-spacing: .22em; text-transform: uppercase; color: #fff; }
+@media (min-width: 913px) { .menu { display: none; } }
+
+body.--menu-locked { overflow: hidden; }
+</style>
+</head>
+<body>
+<div id="app">
+<div class="nx-intro" aria-hidden="true"><div class="nx-logo"><div class="nx-h nx-h1"><div class="nx-brush"></div><div class="nx-lum"></div></div><div class="nx-h nx-h2"><div class="nx-brush"></div></div><div class="nx-h nx-h3"><div class="nx-brush"></div></div></div></div>
+<script>(function(){var F=[[0,3.8,15,81],[3.8,2.8,10,62],[6.6,4.8,37,100],[11.4,4,23,100],[15.4,4,15,86],[19.4,2.5,27,89],[21.9,4,20,100],[25.9,2,30,100],[27.9,4,35,95],[31.9,3.5,39,95],[35.4,2,34,95],[37.4,2.6,22,95],[40,6,47,100],[46,2,36,100],[48,5.5,29,100],[53.5,3,39,95],[56.5,4.1,45,100],[60.6,2.4,34,100],[63,4,47,100],[67,1.5,27,95],[68.5,2.8,37,100],[71.3,2.3,9,100],[73.6,2.2,28,92],[75.8,1,37,100],[76.8,2.1,28,100],[78.9,4.1,34,100],[83,2.5,21,100],[85.5,4.5,39,100],[90,2.8,30,100],[92.8,3.5,19,100],[96.3,3.7,37,100]];
+var fh=F.map(function(f){return '<span style="left:'+f[0]+'%;width:'+f[1]+'%;--s:'+f[2]+'%;--e:'+f[3]+'%"></span>'}).join('');
+document.querySelectorAll('.nx-brush').forEach(function(b){b.innerHTML=fh});
+var C=['#5caaff','#163c8c','#bedeff','#00d4ff','#2f6fd6','#ffffff'],L='',x=.7;
+for(var i=0;i<28;i++){var w=.6+Math.random()*2.4;L+='<span style="--c:'+C[i%C.length]+';left:'+x.toFixed(1)+'%;width:'+w.toFixed(1)+'%;animation:'+(i%2?'nx-r':'nx-l')+' 5s forwards '+(Math.random()*1.6).toFixed(2)+'s"></span>';x+=w+Math.random()*1.5;if(x>97)x=Math.random()*90}
+document.querySelector('.nx-lum').innerHTML=L;
+setTimeout(function(){var e=document.querySelector('.nx-intro');if(e)e.remove()},5200)})()</script>
+  <div class="controller -not-loaded">
+    <div class="scene" aria-hidden="true"><canvas></canvas><div class="scene-loader">0%</div></div>
+    <div class="scene-overlay" aria-hidden="true"></div>
+
+    <div class="menu" id="menu">
+      <div class="menu__inner">
+        <p class="menu__eyebrow">Navegação</p>
+        <div class="menu__list">
+          <button class="menu__item" data-go="hero" style="--i:0"><span class="menu__index">01</span><span class="menu__name">Início</span><span class="menu__arrow" aria-hidden="true">→</span></button>
+          <button class="menu__item" data-go="sitemap" style="--i:1"><span class="menu__index">02</span><span class="menu__name">Soluções</span><span class="menu__arrow" aria-hidden="true">→</span></button>
+          <button class="menu__item" data-go="roadmap" style="--i:2"><span class="menu__index">03</span><span class="menu__name">Processo</span><span class="menu__arrow" aria-hidden="true">→</span></button>
+          <button class="menu__item" data-go="impact" style="--i:3"><span class="menu__index">04</span><span class="menu__name">Diferencial</span><span class="menu__arrow" aria-hidden="true">→</span></button>
+          <button class="menu__item" data-go="contato" style="--i:4"><span class="menu__index">05</span><span class="menu__name">Contato</span><span class="menu__arrow" aria-hidden="true">→</span></button>
+        </div>
+        <a class="gray-button menu__cta" href="https://wa.me/5531998127470?text=Ol%C3%A1%2C%20Nexora%21%20Gostaria%20de%20falar%20com%20um%20especialista." target="_blank" rel="noopener"><div class="gray-button__content"><span>Falar com um especialista →</span></div></a>
+      </div>
+    </div>
+
+    <header class="header">
+      <div class="container header__container">
+        <div class="header__logo" data-go="hero" role="link" aria-label="Nexora Digital — início">
+          <span class="header__logo-mark" aria-hidden="true"><span class="header__logo-mark-core"></span></span>
+          <p>NEXORA</p>
+        </div>
+        <nav class="header__nav">
+          <a href="#solucoes" class="header__nav-btn header__nav-btn_sitemap" data-go="sitemap"><span>Soluções</span></a>
+        </nav>
+        <a class="header__btn header__cta" href="https://wa.me/5531998127470?text=Ol%C3%A1%2C%20Nexora%21%20Gostaria%20de%20falar%20com%20um%20especialista." target="_blank" rel="noopener">
+          <span class="header__cta-label">Falar com um especialista</span>
+          <span class="header__cta-arrow" aria-hidden="true">→</span>
+        </a>
+        <button class="header__burgermenu" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </header>
+
+    <main class="controller-slides">
+      <div class="slide" data-slide-id="hero">
+        <section class="hero -appearing section" id="hero">
+          <div class="hero__top">
+            <h1 class="hero__title"><span>NEXORA</span><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)"> Digital — O próximo nível do digital</span></h1>
+            <div class="hero__subtitle hero__title_down"><span>O próximo nível do digital.</span></div>
+          </div>
+          <div class="hero__bottom">
+            <div class="hero__content">
+              <p class="hero__brief">Sites que impressionam. Estratégias que convertem. Tecnologia que faz negócios crescerem.</p>
+              <a class="hero__cta" href="https://wa.me/5531998127470?text=Ol%C3%A1%2C%20Nexora%21%20Gostaria%20de%20falar%20com%20um%20especialista." target="_blank" rel="noopener"><span class="hero__cta-label">Falar com um especialista</span><span class="hero__cta-arrow" aria-hidden="true">→</span></a>
+            </div>
+            <p class="ui-text hero__text" data-go="sitemap" style="cursor:pointer">Conhecer a Nexora</p>
+          </div>
+        </section>
+      </div>
+
+      <div class="slide" data-slide-id="sitemap">
+        <section class="sitemap section" id="solucoes">
+          <div class="container sitemap__container">
+            <div class="sitemap__intro">
+              <p class="sitemap__eyebrow">Soluções</p>
+              <h2 class="sitemap__heading">Sua empresa já existe. Agora ela precisa ser encontrada.</h2>
+            </div>
+            <div class="sitemap__content">
+              <div class="sitemap__row sitemap__row_1">
+                <a class="sitemap-btn sitemap-link --roadmap" href="https://wa.me/5531998127470?text=Ol%C3%A1%2C%20Nexora%21%20Gostaria%20de%20conversar%20sobre%20a%20cria%C3%A7%C3%A3o%20de%20um%20site%20profissional." target="_blank" rel="noopener"><div class="sitemap-btn__circle"><span></span></div><div class="sitemap-btn__index">01</div><div class="sitemap-btn__text"><h3 class="sitemap-btn__title">Sites profissionais</h3><p class="sitemap-btn__subtitle">Design autoral em padrão Awwwards. Sua marca, lembrada.</p></div></a>
+              </div>
+              <div class="sitemap__row sitemap__row_2">
+                <a class="sitemap-btn sitemap-link --partners" href="https://wa.me/5531998127470?text=Ol%C3%A1%2C%20Nexora%21%20Gostaria%20de%20conversar%20sobre%20o%20desenvolvimento%20de%20um%20site." target="_blank" rel="noopener"><div class="sitemap-btn__circle"><span></span></div><div class="sitemap-btn__index">02</div><div class="sitemap-btn__text"><h3 class="sitemap-btn__title">Desenvolvimento</h3><p class="sitemap-btn__subtitle">Rápido, responsivo e feito para vender</p></div></a>
+                <a class="sitemap-btn sitemap-link --product" href="https://wa.me/5531998127470?text=Ol%C3%A1%2C%20Nexora%21%20Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20de%20marketing%20digital." target="_blank" rel="noopener"><div class="sitemap-btn__circle"><span></span></div><div class="sitemap-btn__index">03</div><div class="sitemap-btn__text"><h3 class="sitemap-btn__title">Marketing digital</h3><p class="sitemap-btn__subtitle">Presença, autoridade e posicionamento</p></div></a>
+              </div>
+              <div class="sitemap__row sitemap__row_3">
+                <a class="sitemap-btn sitemap-link --investors" href="https://wa.me/5531998127470?text=Ol%C3%A1%2C%20Nexora%21%20Gostaria%20de%20conversar%20sobre%20estrat%C3%A9gia%20de%20vendas." target="_blank" rel="noopener"><div class="sitemap-btn__circle"><span></span></div><div class="sitemap-btn__index">04</div><div class="sitemap-btn__text"><h3 class="sitemap-btn__title">Estratégia de vendas</h3><p class="sitemap-btn__subtitle">Atenção → interesse → oportunidade → cliente</p></div></a>
+                <a class="sitemap-btn sitemap-link --social" href="https://wa.me/5531998127470?text=Ol%C3%A1%2C%20Nexora%21%20Gostaria%20de%20conversar%20sobre%20tr%C3%A1fego%20pago." target="_blank" rel="noopener"><div class="sitemap-btn__circle"><span></span></div><div class="sitemap-btn__index">05</div><div class="sitemap-btn__text"><h3 class="sitemap-btn__title">Tráfego pago</h3><p class="sitemap-btn__subtitle">Google Ads, Meta Ads e leads qualificados</p></div></a>
+              </div>
+            </div>
+            <button class="gray-button sitemap__join" data-go="roadmap"><div class="gray-button__content"><span>Conhecer a Nexora →</span></div></button>
+          </div>
+        </section>
+      </div>
+
+      <div class="slide" data-slide-id="roadmap" style="min-height:420vh">
+        <section class="brief section" id="processo">
+          <div class="container brief__container">
+            <p class="brief__chapter brief__reveal">Processo · 5 etapas</p>
+            <article class="brief__stage brief__reveal" style="--wc:3">
+              <span class="brief__num" aria-hidden="true">01</span>
+              <p class="brief__kicker">Diagnóstico</p>
+              <h3 class="brief__heading"><span class="brief__word" style="--i:0">Primeiro,</span> <span class="brief__word" style="--i:1">entender</span> <span class="brief__word" style="--i:2">o negócio</span></h3>
+              <p class="brief__body">Entendemos o negócio, o público e os objetivos.</p>
+            </article>
+            <article class="brief__stage brief__reveal" style="--wc:3">
+              <span class="brief__num" aria-hidden="true">02</span>
+              <p class="brief__kicker">Estratégia</p>
+              <h3 class="brief__heading"><span class="brief__word" style="--i:0">Direção</span> <span class="brief__word" style="--i:1">antes</span> <span class="brief__word" style="--i:2">de execução</span></h3>
+              <p class="brief__body">Definimos posicionamento, direção e oportunidades.</p>
+            </article>
+            <article class="brief__stage brief__reveal" style="--wc:3">
+              <span class="brief__num" aria-hidden="true">03</span>
+              <p class="brief__kicker">Criação</p>
+              <h3 class="brief__heading"><span class="brief__word" style="--i:0">Design</span> <span class="brief__word" style="--i:1">que fica</span> <span class="brief__word" style="--i:2">na memória</span></h3>
+              <p class="brief__body">Desenvolvemos a experiência visual e digital.</p>
+            </article>
+            <article class="brief__stage brief__reveal" style="--wc:3">
+              <span class="brief__num" aria-hidden="true">04</span>
+              <p class="brief__kicker">Desenvolvimento</p>
+              <h3 class="brief__heading"><span class="brief__word" style="--i:0">Conceito</span> <span class="brief__word" style="--i:1">vira</span> <span class="brief__word" style="--i:2">produto</span></h3>
+              <p class="brief__body">Transformamos o conceito em uma solução funcional e performática.</p>
+            </article>
+            <article class="brief__stage brief__reveal" style="--wc:3">
+              <span class="brief__num" aria-hidden="true">05</span>
+              <p class="brief__kicker">Performance</p>
+              <h3 class="brief__heading"><span class="brief__word" style="--i:0">Medir.</span> <span class="brief__word" style="--i:1">Ajustar.</span> <span class="brief__word" style="--i:2">Evoluir.</span></h3>
+              <p class="brief__body">Acompanhamos, analisamos e buscamos evolução contínua.</p>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <div class="slide" data-slide-id="impact">
+        <section class="impact section" id="diferencial">
+          <div class="container impact__container">
+            <p class="impact__chapter impact__reveal">Diferencial</p>
+            <h2 class="impact__heading impact__reveal">Tudo conectado em um único ecossistema digital.</h2>
+            <div class="impact__grid impact__grid--five">
+              <div class="impact__metric impact__reveal" style="--i:0"><p class="impact__value">Design</p><p class="impact__label">Experiências digitais modernas e memoráveis.</p></div>
+              <div class="impact__metric impact__reveal" style="--i:1"><p class="impact__value">Tecnologia</p><p class="impact__label">Tecnologias modernas, foco em performance.</p></div>
+              <div class="impact__metric impact__reveal" style="--i:2"><p class="impact__value">Estratégia</p><p class="impact__label">Cada projeto cumpre um objetivo de negócio.</p></div>
+              <div class="impact__metric impact__reveal" style="--i:3"><p class="impact__value">Performance</p><p class="impact__label">Marketing e tráfego orientados por dados.</p></div>
+              <div class="impact__metric impact__reveal" style="--i:4"><p class="impact__value">Vendas</p><p class="impact__label">Atenção transformada em oportunidades.</p></div>
+            </div>
+            <p class="impact__foot impact__reveal">Não queremos apenas gerar visualizações. Queremos atrair as pessoas certas e transformar presença digital em oportunidades reais.</p>
+          </div>
+        </section>
+      </div>
+
+      <div class="slide" data-slide-id="contato">
+        <section class="impact section" id="contato">
+          <div class="container impact__container">
+            <p class="impact__chapter impact__reveal">Contato</p>
+            <h2 class="impact__heading impact__reveal" style="max-width:22ch">Sua empresa merece uma presença digital à altura do seu trabalho.</h2>
+            <p class="impact__label impact__reveal" style="max-width:56ch;font-size:16px">Conte para a Nexora sobre seu negócio. Vamos analisar seu cenário atual e mostrar um caminho estratégico para fortalecer sua presença digital e gerar novas oportunidades.</p>
+            <div class="impact__reveal" style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:10px">
+              <a class="hero__cta" href="https://wa.me/5531998127470?text=Ol%C3%A1%2C%20Nexora%21%20Gostaria%20de%20falar%20com%20um%20especialista." target="_blank" rel="noopener"><span class="hero__cta-label">Falar com um especialista</span><span class="hero__cta-arrow" aria-hidden="true">→</span></a>
+              <a class="gray-button" href="https://wa.me/5531998127470?text=Ol%C3%A1%2C%20Nexora%21%20Gostaria%20de%20solicitar%20uma%20proposta%20para%20minha%20empresa." target="_blank" rel="noopener"><div class="gray-button__content"><span>Solicitar uma proposta →</span></div></a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer" id="footer">
+      <div class="container footer__container">
+        <div class="footer__top">
+          <div class="footer__brand">
+            <p class="footer__wordmark">NEXORA DIGITAL</p>
+            <p class="footer__tagline">Estratégia, tecnologia e performance conectadas para transformar a presença digital de empresas em oportunidades reais de negócio.</p>
+            <p class="footer__tagline" style="margin-top:14px;opacity:.7">Belo Horizonte — Minas Gerais · Atendimento em BH e online para outras regiões.</p>
+          </div>
+          <a class="footer__cta" href="https://wa.me/5531998127470?text=Ol%C3%A1%2C%20Nexora%21%20Gostaria%20de%20falar%20com%20um%20especialista." target="_blank" rel="noopener"><span class="footer__cta-label">Falar com um especialista</span><span class="footer__cta-arrow" aria-hidden="true">→</span></a>
+        </div>
+        <nav class="footer__nav" aria-label="Rodapé">
+          <ul class="footer__links">
+            <li><button class="footer__link" data-go="hero">Início</button></li>
+            <li><button class="footer__link" data-go="sitemap">Soluções</button></li>
+            <li><a class="footer__link" href="https://wa.me/5531998127470?text=Ol%C3%A1%2C%20Nexora%21%20Gostaria%20de%20conversar%20sobre%20a%20cria%C3%A7%C3%A3o%20de%20um%20site%20profissional." target="_blank" rel="noopener">Sites</a></li>
+            <li><a class="footer__link" href="https://wa.me/5531998127470?text=Ol%C3%A1%2C%20Nexora%21%20Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20de%20marketing%20digital." target="_blank" rel="noopener">Marketing</a></li>
+            <li><a class="footer__link" href="https://wa.me/5531998127470?text=Ol%C3%A1%2C%20Nexora%21%20Gostaria%20de%20conversar%20sobre%20tr%C3%A1fego%20pago." target="_blank" rel="noopener">Tráfego Pago</a></li>
+            <li><a class="footer__link" href="https://wa.me/5531998127470?text=Ol%C3%A1%2C%20Nexora%21%20Gostaria%20de%20conversar%20sobre%20estrat%C3%A9gia%20de%20vendas." target="_blank" rel="noopener">Estratégia</a></li>
+            <li><button class="footer__link" data-go="impact">Sobre</button></li>
+            <li><button class="footer__link" data-go="contato">Contato</button></li>
+          </ul>
+          <ul class="footer__links footer__links--social">
+            <li><a class="footer__link" href="https://instagram.com/agencianexoradigital" target="_blank" rel="noopener">Instagram · @agencianexoradigital</a></li>
+            <li><a class="footer__link" href="https://wa.me/5531998127470?text=Ol%C3%A1%2C%20Nexora%21%20Gostaria%20de%20falar%20com%20um%20especialista." target="_blank" rel="noopener">WhatsApp · (31) 99812-7470</a></li>
+          </ul>
+        </nav>
+        <div class="footer__base">
+          <p class="footer__copy">© 2026 Nexora Digital — agencianexoradigital.com.br</p>
+          <button class="footer__top-btn" data-go="hero">Voltar ao topo <span aria-hidden="true">↑</span></button>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<style>
+.impact__grid--five { grid-template-columns: repeat(5,1fr); max-width: 1180px; gap: 22px; }
+.impact__grid--five .impact__value { font-size: clamp(22px, 2.1vw, 30px) !important; line-height: 1.1; }
+.sitemap-btn { text-align: left; }
+.sitemap-btn__title { font-weight: inherit; }
+@media (max-width: 991px) { .impact__grid--five { grid-template-columns: 1fr 1fr; max-width: 560px; } }
+@media (max-width: 560px) { .impact__grid--five { grid-template-columns: 1fr; } }
+[data-slide-id="contato"] { margin-top: 160px; }
+
+/* ============================ NEXORA INTRO ============================ */
+:root{--nexora-bg:#010101;--nexora-primary:#5caaff;--nexora-secondary:#163c8c;--nexora-glow:rgba(92,170,255,.75);--nexora-text:#fff}
+.scene .scene-loader{display:none}
+.nx-intro{position:fixed;inset:0;width:100vw;height:100vh;z-index:300;background:var(--nexora-bg);display:flex;align-items:center;justify-content:center;overflow:hidden;animation:nx-out .7s ease 4.3s forwards}
+.nx-intro::after{content:"";position:absolute;inset:0;background:radial-gradient(40% 40% at 50% 50%,rgba(92,170,255,.12),transparent 70%);pointer-events:none}
+.nx-logo{position:relative;width:min(300px,60vw);aspect-ratio:1;overflow:hidden;transform-origin:30% center;animation:nx-zoom 3.5s ease-in .7s forwards}
+.nx-logo::before{content:"";position:absolute;width:150%;height:30%;left:-25%;bottom:-27%;border-radius:50%;background:var(--nexora-bg);z-index:5}
+.nx-h{position:absolute;overflow:hidden}
+.nx-h1{width:19.5%;height:100%;left:22.4%;top:0;transform:rotate(180deg);background:rgba(92,170,255,.45);animation:nx-fadebox 2s forwards .6s;overflow:visible}
+.nx-h2{width:19.5%;height:100%;left:57.8%;top:0;transform:rotate(180deg)}
+.nx-h3{width:19%;height:150%;left:40.5%;top:-25%;transform:rotate(-19.5deg);box-shadow:0 0 35px -12px rgba(0,0,0,.6)}
+.nx-brush{position:absolute;width:100%;height:300%;top:0;overflow:hidden}
+.nx-h1 .nx-brush{animation:nx-brush 2.5s forwards 1.2s}
+.nx-h2 .nx-brush{animation:nx-brush 2s forwards .5s}
+.nx-h3 .nx-brush{animation:nx-brush 2s forwards .8s}
+.nx-brush::before{content:"";position:absolute;width:100%;height:70%;background:linear-gradient(180deg,var(--nexora-primary),var(--nexora-secondary));box-shadow:0 0 29px 24px var(--nexora-glow)}
+.nx-brush span{position:absolute;bottom:10%;height:30%;background:linear-gradient(to bottom,var(--nexora-primary) 0%,var(--nexora-primary) var(--s),transparent var(--e))}
+.nx-h1 .nx-brush span{bottom:0;height:40%}
+.nx-lum{position:absolute;inset:0;opacity:0;animation:nx-show 2s forwards 1.6s}
+.nx-lum span{position:absolute;top:0;height:100%;background:var(--c);box-shadow:0 0 10px 0 var(--nexora-glow)}
+@keyframes nx-brush{to{transform:translateY(-100%)}}
+@keyframes nx-show{to{opacity:1}}
+@keyframes nx-fadebox{to{background:rgba(92,170,255,0)}}
+@keyframes nx-l{40%{transform:translate(10px) scaleX(1)}50%{transform:translate(60px)}100%{transform:translate(120px) scaleX(3)}}
+@keyframes nx-r{40%{transform:translate(-10px) scaleX(1)}50%{transform:translate(-60px)}100%{transform:translate(-120px) scaleX(3)}}
+@keyframes nx-zoom{to{transform:scale(15);opacity:0}}
+@keyframes nx-out{to{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion:reduce){.nx-intro{animation:nx-out .4s ease .6s forwards}.nx-logo,.nx-logo *{animation:none!important}.nx-brush{transform:translateY(-100%)}}
+</style>
+<script type="module">
+import * as THREE from 'three'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
+import { GammaCorrectionShader } from 'three/examples/jsm/shaders/GammaCorrectionShader.js'
+import { CopyShader } from 'three/examples/jsm/shaders/CopyShader.js'
+import { Pass } from 'three/examples/jsm/postprocessing/Pass.js'
+import Lenis from 'lenis'
+
+/* Start every visit at the top */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
+window.scrollTo(0, 0)
+
+/* ---------------- Smooth scroll (Lenis) ---------------- */
+const lenis = new Lenis({
+  duration: 1.1,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  smoothWheel: true, wheelMultiplier: 1, touchMultiplier: 1.4,
+})
+function rafLoop(time){ lenis.raf(time); requestAnimationFrame(rafLoop) } requestAnimationFrame(rafLoop)
+
+/* ---------------- helpers ---------------- */
+const lerp = (a, b, t) => a + (b - a) * t
+const clamp01 = (v) => Math.min(1, Math.max(0, v))
+const isTouch = () => window.innerWidth < 768 || (window.matchMedia && window.matchMedia('(hover:none) and (pointer:coarse)').matches)
+
+/* ---------------- Layers ---------------- */
+const NONE = 0, TORUS_SCENE = 1, BLOOM_SCENE = 2, ENTIRE_SCENE = 3
+
+/* ---------------- Renderer / scene / camera ---------------- */
+const canvas = document.querySelector('.scene canvas')
+const sceneEl = document.querySelector('.scene')
+let W = sceneEl.clientWidth || window.innerWidth, Hh = sceneEl.clientHeight || window.innerHeight
+
+const renderer = new THREE.WebGL1Renderer({ canvas, antialias: true })
+renderer.shadowMap.enabled = true
+renderer.shadowMap.type = THREE.VSMShadowMap
+renderer.setPixelRatio(window.devicePixelRatio)
+renderer.setSize(W, Hh, false)
+
+const scene = new THREE.Scene()
+scene.background = new THREE.Color(0x000000)
+scene.fog = new THREE.Fog(0x000000, 0, 15)
+
+const camera = new THREE.PerspectiveCamera(45, W / Hh, 0.1, 80)
+camera.position.set(0, 0, 3)
+camera.layers.enable(1)
+
+/* ---------------- Pointer ---------------- */
+const pointer = { x: 0, y: 0, nx: 0, ny: 0 }
+window.addEventListener('mousemove', (e) => {
+  pointer.x = e.clientX; pointer.y = e.clientY
+  pointer.nx = (e.clientX / window.innerWidth) * 2 - 1
+  pointer.ny = -((e.clientY / window.innerHeight) * 2 - 1)
+})
+window.addEventListener('mouseenter', (e) => { pointer.x = e.clientX; pointer.y = e.clientY })
+
+/* ============================================================
+   FINAL PASS
+   ============================================================ */
+const FinalShader = {
+  uniforms: {
+    iTime: { value: 0 },
+    tDiffuse: { value: null },
+    bloomTexture: { value: null },
+    torusTexture: { value: null },
+    haloTexture: { value: null },
+  },
+  vertexShader: `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = vec4( position, 1.0 );
+    }`,
+  fragmentShader: `
+    uniform float iTime;
+    uniform sampler2D tDiffuse;
+    uniform sampler2D bloomTexture;
+    uniform sampler2D torusTexture;
+    uniform sampler2D haloTexture;
+    varying vec2 vUv;
+
+    vec3 warp3d(vec3 pos, float t) {
+      float curv =.8, a = 1.9, b = 0.7;
+      pos *= 2.;
+      pos.x += curv * sin(t + a * pos.y) + t * b;
+      pos.y += curv * cos(t + a * pos.x);
+      pos.y += curv * sin(t + a * pos.z) + t * b;
+      pos.z += curv * cos(t + a * pos.y);
+      pos.z += curv * sin(t + a * pos.x) + t * b;
+      pos.x += curv * cos(t + a * pos.z);
+      return 0.5 + 0.5 * cos(pos.xyz + vec3(1,2,4));
+    }
+
+    void main() {
+      vec2 uv = 2. * vUv - 1.;
+      vec3 w = pow(warp3d(vec3(uv.x, sin(uv.y), uv.y), iTime * 1.5), vec3(1.5));
+      vec3 col = 1.5 * vec3(.04, .10, .28) * w.x;
+      col *= w.y;
+      col += vec3(.12, .28, .55) * w.z;
+      col *= smoothstep(0.6, 1., abs(uv.y));
+      col *= smoothstep(-.5, 1., -uv.y*uv.x);
+      col *= smoothstep(-.5, 1., -uv.y*uv.x);
+      gl_FragColor = vec4(col + texture2D(bloomTexture, vUv).xyz + texture2D(torusTexture, vUv).xyz + texture2D(tDiffuse, vUv).xyz + texture2D(haloTexture, vUv).xyz, 1.);
+    }`,
+}
+
+/* ============================================================
+   COMPOSERS
+   ============================================================ */
+const torusComposer = new EffectComposer(renderer)
+torusComposer.renderToScreen = false
+torusComposer.addPass(new RenderPass(scene, camera))
+torusComposer.addPass(new ShaderPass(GammaCorrectionShader))
+torusComposer.addPass(new UnrealBloomPass(new THREE.Vector2(W, Hh), 0.6, 0.3, 0))
+torusComposer.addPass(new ShaderPass(CopyShader))
+
+const bloomComposer = new EffectComposer(renderer)
+bloomComposer.renderToScreen = false
+bloomComposer.addPass(new RenderPass(scene, camera))
+bloomComposer.addPass(new UnrealBloomPass(new THREE.Vector2(W, Hh), 0.175, 0.2, 0))
+bloomComposer.addPass(new ShaderPass(GammaCorrectionShader))
+
+const finalPass = new ShaderPass(FinalShader)
+finalPass.uniforms.bloomTexture.value = bloomComposer.renderTarget1.texture
+finalPass.uniforms.torusTexture.value = torusComposer.renderTarget1.texture
+
+const finalComposer = new EffectComposer(renderer)
+finalComposer.addPass(new RenderPass(scene, camera))
+finalComposer.addPass(finalPass)
+
+const iResUniform = { x: W * renderer.getPixelRatio(), y: Hh * renderer.getPixelRatio() }
+
+/* ============================================================
+   OBJECT 1 — Preloader spiral
+   ============================================================ */
+const POINTS = 17
+class Preloader {
+  constructor() {
+    this.percent = 0
+    this.init = true
+    this.done = false
+    this.points = new Float32Array(POINTS * 2)
+    this.centers = new Float32Array(POINTS * 2)
+    const geo = new THREE.PlaneBufferGeometry(2, 2)
+    this.uniforms = {
+      iResolution: { value: new THREE.Vector2(iResUniform.x, iResUniform.y) },
+      iPoints: { value: Array.from({ length: POINTS }, () => new THREE.Vector2()) },
+      iCenters: { value: Array.from({ length: POINTS }, () => new THREE.Vector2()) },
+    }
+    const mat = new THREE.ShaderMaterial({
+      uniforms: this.uniforms,
+      vertexShader: `
+        varying vec2 vUv;
+        void main() { vUv = uv; gl_Position = vec4( position, 1.0 ); }`,
+      fragmentShader: `
+        #define POINTS 17
+        #define RADIUS 0.03
+        #define GLOW 1.5
+        uniform vec2 iResolution;
+        uniform vec2 iPoints[POINTS];
+        uniform vec2 iCenters[POINTS];
+        varying vec2 vUv;
+        float dot2( in vec2 v ) { return dot(v,v); }
+        vec2 sdBezier(vec2 pos, vec2 A, vec2 B, vec2 C) {
+          vec2 a = B - A;
+          vec2 b = A - 2.0*B + C;
+          vec2 c = a * 2.0;
+          vec2 d = A - pos;
+          float kk = 1.0 / dot(b,b);
+          float kx = kk * dot(a,b);
+          float ky = kk * (2.0*dot(a,a) + dot(d,b)) / 3.0;
+          float kz = kk * dot(d,a);
+          vec2 res;
+          float p = ky - kx*kx;
+          float p3 = p*p*p;
+          float q = kx*(2.0*kx*kx - 3.0*ky) + kz;
+          float h = q*q + 4.0*p3;
+          if(h >= 0.0) {
+            h = sqrt(h);
+            vec2 x = (vec2(h, -h) - q) / 2.0;
+            vec2 uv = sign(x)*pow(abs(x), vec2(1.0/3.0));
+            float t = clamp(uv.x+uv.y-kx, 0.0, 1.0);
+            res = vec2(dot2(d+(c+b*t)*t),t);
+          } else {
+            float z = sqrt(-p);
+            float v = acos( q/(p*z*2.0) ) / 3.0;
+            float m = cos(v);
+            float n = sin(v)*1.732050808;
+            vec3 t = clamp( vec3(m+m,-n-m,n-m)*z-kx, 0.0, 1.0);
+            float dis = dot2(d+(c+b*t.x)*t.x);
+            res = vec2(dis,t.x);
+            dis = dot2(d+(c+b*t.y)*t.y);
+            if( dis<res.x ) res = vec2(dis,t.y );
+          }
+          res.x = sqrt(res.x);
+          return res;
+        }
+        float map(vec2 pos){
+          float d = 1e9;
+          for(int i = 0; i < POINTS - 2; i++) {
+            vec2 f = sdBezier(pos, iCenters[i], iPoints[i + 1], iCenters[i + 1]);
+            d = min(d, max(
+              pow(f.x, 0.65) - .01,
+              f.x + 0.3 * pow((float(POINTS - 2) - f.y - float(i)) / float(POINTS - 2), 1.85)
+            ));
+          }
+          return d;
+        }
+        void main() {
+          vec2 uv = (2. * gl_FragCoord.xy - iResolution.xy) / iResolution.y;
+          float d = map(uv);
+          vec3 col = vec3(.12, .22, .50) * min(pow(RADIUS/max(0., d), GLOW), 2.5);
+          float f = length(uv - iCenters[POINTS - 2]);
+          col = max(col, vec3(.35, .65, 1.0) * min(pow(RADIUS/max(0., pow(f, 0.65)), GLOW), 5.));
+          gl_FragColor = vec4(col, 1.0);
+        }`,
+    })
+    this.mesh = new THREE.Mesh(geo, mat)
+    this.mesh.frustumCulled = false
+    this.mesh.layers.set(ENTIRE_SCENE)
+    scene.add(this.mesh)
+
+    this.tweenStart = null
+    this.loaderEl = document.querySelector('.scene-loader')
+    this.marked = false
+  }
+  updateSpiral(points, centers, time, percent) {
+    const count = POINTS
+    for (let i = 0; i < count; i++) {
+      const t = 60 * percent - 8 * i / count * (1 + 2 * percent)
+      const l = 0.8 * Math.exp(-0.05 * t)
+      const x = l * Math.cos(t) + 0.1 * l * Math.cos(t * 5 / 4 - 1)
+      const y = l * Math.sin(t) + 0.1 * l * Math.sin(t * 3 / 4 - 1)
+      const idx = (count - 1 - i)
+      points[idx * 2] = x
+      points[idx * 2 + 1] = y
+    }
+    for (let i = 0; i < count - 1; i++) {
+      centers[i * 2] = (points[i * 2] + points[(i + 1) * 2]) / 2
+      centers[i * 2 + 1] = (points[i * 2 + 1] + points[(i + 1) * 2 + 1]) / 2
+    }
+    centers[(count - 1) * 2] = points[(count - 1) * 2]
+    centers[(count - 1) * 2 + 1] = points[(count - 1) * 2 + 1]
+    for (let i = 0; i < count; i++) {
+      this.uniforms.iPoints.value[i].set(points[i * 2], points[i * 2 + 1])
+      this.uniforms.iCenters.value[i].set(centers[i * 2], centers[i * 2 + 1])
+    }
+  }
+  render({ destroy }) {
+    if (this.done) return
+    if (this.init) { this.tweenStart = performance.now(); this.init = false }
+    const elapsed = performance.now() - this.tweenStart
+    let p = clamp01(elapsed / 5000)
+    this.percent = p
+    const time = 4 * (performance.now() / 1000)
+    this.updateSpiral(this.points, this.centers, time, p)
+    const pctInt = Math.min(100, Math.round(p * 100))
+    if (this.loaderEl) this.loaderEl.textContent = pctInt + '%'
+    if (pctInt > 98 && !this.marked) {
+      this.marked = true
+      onLoaded()
+    }
+    if (destroy && pctInt >= 100) {
+      this.destroyMesh()
+    }
+  }
+  destroyMesh() {
+    if (this.done) return
+    this.done = true
+    scene.remove(this.mesh)
+    this.mesh.geometry.dispose()
+    this.mesh.material.dispose()
+    setTimeout(() => {
+      const heroEl = document.querySelector('.hero')
+      if (heroEl) heroEl.classList.remove('-appearing')
+    }, 150)
+  }
+}
+
+/* ============================================================
+   OBJECT 2 — Wave / disc (Hero)
+   ============================================================ */
+const H = 0.1, R = 1.9
+function sine(x) { return 0.6 * Math.sin(x) + 0.3 * Math.cos(2 * x) + 0.1 * Math.sin(4 * x) }
+function noise1d(a, r, q) { return sine(10 * q * (a + 2 * r)) }
+function fbm(a, r) {
+  let c = 1, p = 1.3, q = 0.9, sum = 0
+  for (let k = 0; k < 4; k++) {
+    sum += c * noise1d(a * p, r * p, q)
+    c *= q; p *= 1.3
+  }
+  return sum / 3.43
+}
+class Wave {
+  constructor() {
+    this.group = new THREE.Group()
+    this.group.position.set(0, 0, -0.8)
+    this.group.rotation.set(0.6, 0, 0)
+    this.uniforms = {
+      iTime: { value: 0 },
+      iMouse: { value: new THREE.Vector2(0, 0) },
+      iAnimate: { value: 0 },
+      uOpacity: { value: 1 },
+      uDisperse: { value: 0 },
+    }
+    const count1 = 120000, count2 = 1500
+    const sphereR = 0.85
+    // wave1
+    const g1 = new THREE.BufferGeometry()
+    const pos1 = new Float32Array(count1 * 3)
+    const size1 = new Float32Array(count1)
+    const id1 = new Float32Array(count1)
+    const sp1 = new Float32Array(count1 * 3)
+    for (let i = 0; i < count1; i++) {
+      const r = R * Math.pow(Math.random(), 0.6)
+      const a = Math.random() * Math.PI * 2
+      const x = r * Math.sin(a), z = r * Math.cos(a)
+      const y = H * fbm(a, r)
+      pos1[i * 3] = x; pos1[i * 3 + 1] = y; pos1[i * 3 + 2] = z
+      size1[i] = 10 + 10 * Math.random()
+      id1[i] = Math.random()
+      const rj = sphereR * Math.cbrt(Math.random())
+      const st = Math.random() * Math.PI * 2, sp = Math.acos(2 * Math.random() - 1)
+      sp1[i * 3] = rj * Math.sin(sp) * Math.cos(st)
+      sp1[i * 3 + 1] = rj * Math.sin(sp) * Math.sin(st) * 0.5
+      sp1[i * 3 + 2] = rj * Math.cos(sp)
+    }
+    g1.setAttribute('position', new THREE.BufferAttribute(pos1, 3))
+    g1.setAttribute('size', new THREE.BufferAttribute(size1, 1))
+    g1.setAttribute('id', new THREE.BufferAttribute(id1, 1))
+    g1.setAttribute('spherePos', new THREE.BufferAttribute(sp1, 3))
+    const m1 = new THREE.ShaderMaterial({
+      uniforms: this.uniforms, transparent: true, depthTest: false, blending: THREE.AdditiveBlending,
+      vertexShader: `
+        attribute float size;
+        attribute float id;
+        attribute vec3 spherePos;
+        uniform vec2 iMouse;
+        uniform float iAnimate;
+        uniform float uDisperse;
+        varying vec3 pack;
+        varying float vDisperse;
+        void main() {
+          float d = pow(uDisperse, 1.4);
+          vec3 outward = spherePos * d * 7.0;
+          outward *= (0.7 + 0.6 * id);
+          vec3 pos = position + outward;
+          vDisperse = d;
+          pack.x = length(pos.xz);
+          pack.y = atan(pos.z, pos.x);
+          pack.z = pos.y;
+          vec4 mv = modelViewMatrix * vec4( pos, 1.0 );
+          gl_PointSize =  size / -mv.z * (.5 + .5*iAnimate);
+          vec4 res = projectionMatrix * mv;
+          vec2 r = res.xy - 2.5 * iMouse;
+          float f = clamp(.35 - length(r), 0., 1.);
+          res.xy += normalize(r) * f * f;
+          float a = pow(iAnimate, 0.6);
+          res.xy *= clamp(2. * a + pow(id, .7) - 1., 0., 1.);
+          gl_Position = res;
+        }`,
+      fragmentShader: `
+        uniform float iTime;
+        uniform float uOpacity;
+        uniform float iAnimate;
+        varying vec3 pack;
+        varying float vDisperse;
+        void main() {
+          float r = pack.x;
+          float a = pack.y;
+          float py = pack.z;
+          float glow = pow(0.018 / max(0., r), .9);
+          float fading = smoothstep(-0.1, .8*0.1, py) * smoothstep(1.6 * 1.9, .7 * 1.9, r*r);
+          a = sin(4. * ((-a + 2. * r)));
+          float blink = clamp((.2 + 1.5 * r * sin(a)) * (.5 + .5 * sin(r * 8. + iTime * 4.)), 0., 1.);
+          vec3 col = vec3(.07, .14, .34) * .6;
+          vec3 col2 = vec3(.25, .55, .95) * .6;
+          vec3 light = vec3(.35, .55, .90) * .8;
+          vec3 tex = 1. - smoothstep(.6, 1., vec3(length(2. * gl_PointCoord - 1.)));
+          col = mix(col, col2, clamp(blink + vDisperse * 0.7, 0., 1.));
+          float fadeOut = 1.0 - vDisperse;
+          gl_FragColor = vec4(col * tex * fading + tex * light * glow, uOpacity * fadeOut);
+        }`,
+    })
+    this.p1 = new THREE.Points(g1, m1)
+    this.p1.frustumCulled = false
+    this.p1.layers.set(ENTIRE_SCENE)
+    this.group.add(this.p1)
+    // wave2 (rocks)
+    const g2 = new THREE.BufferGeometry()
+    const pos2 = new Float32Array(count2 * 3)
+    const size2 = new Float32Array(count2)
+    const id2 = new Float32Array(count2)
+    const sp2 = new Float32Array(count2 * 3)
+    const sphereR2 = 0.85
+    for (let i = 0; i < count2; i++) {
+      const r = 0.85 * R * Math.sqrt(Math.random())
+      const a = Math.random() * Math.PI * 2
+      const x = r * Math.sin(a), z = r * Math.cos(a)
+      const y = H * (r * r * 6 + 1)
+      pos2[i * 3] = x; pos2[i * 3 + 1] = y; pos2[i * 3 + 2] = z
+      size2[i] = 30 + 30 * Math.random()
+      id2[i] = Math.random()
+      const rj = sphereR2 * Math.cbrt(Math.random())
+      const st = Math.random() * Math.PI * 2, sp = Math.acos(2 * Math.random() - 1)
+      sp2[i * 3] = rj * Math.sin(sp) * Math.cos(st)
+      sp2[i * 3 + 1] = rj * Math.sin(sp) * Math.sin(st) * 0.5
+      sp2[i * 3 + 2] = rj * Math.cos(sp)
+    }
+    g2.setAttribute('position', new THREE.BufferAttribute(pos2, 3))
+    g2.setAttribute('size', new THREE.BufferAttribute(size2, 1))
+    g2.setAttribute('id', new THREE.BufferAttribute(id2, 1))
+    g2.setAttribute('spherePos', new THREE.BufferAttribute(sp2, 3))
+    const m2 = new THREE.ShaderMaterial({
+      uniforms: this.uniforms, transparent: true, depthTest: false, blending: THREE.AdditiveBlending,
+      vertexShader: `
+        attribute float size;
+        attribute float id;
+        attribute vec3 spherePos;
+        uniform float iTime;
+        uniform vec2 iMouse;
+        uniform float iAnimate;
+        uniform float uDisperse;
+        varying float rn;
+        varying float vDisperse;
+        void main() {
+          rn = id;
+          float rr = position.x * position.x + position.z * position.z;
+          vec3 pos = vec3(position.x, 0.1 * sin(iTime * .6 + 100. * rn) / (rr * .33 + .8), position.z);
+          float d = pow(uDisperse, 1.4);
+          pos += spherePos * d * 7.0 * (0.7 + 0.6 * id);
+          vDisperse = d;
+          vec4 vpos = modelViewMatrix * vec4( pos, 1.0 );
+          gl_PointSize =  size / -vpos.z * ( 0.8 + 0.2 * sin(iTime * (1. + rn) * 3. )) * (.5 + .5*iAnimate);
+          vec4 res = projectionMatrix * vpos;
+          vec2 r = res.xy - 2.5 * iMouse;
+          float f = clamp(.35 - length(r), 0., 1.);
+          res.xy += normalize(r) * f * f;
+          float a = pow(iAnimate, 0.9);
+          res.xy *= clamp(2. * a + pow(id, .7) - 1., 0., 1.);
+          gl_Position = res;
+        }`,
+      fragmentShader: `
+        uniform float uOpacity;
+        uniform float iAnimate;
+        varying float rn;
+        varying float vDisperse;
+        void main() {
+          vec3 color = vec3(.25, .55, .95) * .8;
+          vec3 tex = 1. - smoothstep(.3, 1., vec3(length(2. * gl_PointCoord - 1.)));
+          float fadeOut = 1.0 - vDisperse;
+          gl_FragColor = vec4(color * tex, (.5 + .5 * rn) * uOpacity * fadeOut);
+        }`,
+    })
+    this.p2 = new THREE.Points(g2, m2)
+    this.p2.frustumCulled = false
+    this.p2.layers.set(ENTIRE_SCENE)
+    this.group.add(this.p2)
+
+    scene.add(this.group)
+    this.entranceStart = null
+  }
+  render({ progress, disperseProgress }, dt) {
+    const t = performance.now() / 1000
+    this.uniforms.iTime.value = t
+    if (progress > 0.01 && this.entranceStart === null) this.entranceStart = performance.now()
+    if (this.entranceStart !== null) {
+      const e = clamp01((performance.now() - this.entranceStart) / 3000)
+      const eased = 1 - Math.pow(1 - e, 3)
+      this.uniforms.iAnimate.value = eased
+    }
+    this.uniforms.uDisperse.value = disperseProgress
+    this.p1.rotation.y += 0.15 * dt
+    this.p2.rotation.y += 0.15 * dt
+    // mouse
+    this.uniforms.iMouse.value.x = lerp(this.uniforms.iMouse.value.x, pointer.nx, 0.09)
+    this.uniforms.iMouse.value.y = lerp(this.uniforms.iMouse.value.y, pointer.ny, 0.09)
+    this.group.visible = disperseProgress < 0.98
+  }
+}
+
+/* ============================================================
+   OBJECT 3 — Galaxy (Sitemap)
+   ============================================================ */
+function makeLogoTexture() {
+  const c = document.createElement('canvas'); c.width = c.height = 512
+  const ctx = c.getContext('2d'); const s = 512
+  ctx.clearRect(0, 0, s, s)
+  const cx = s / 2, cy = s / 2
+  ctx.strokeStyle = 'rgba(92,170,255,.95)'; ctx.lineWidth = 5
+  ctx.beginPath(); ctx.arc(cx, cy, 0.38 * s, 0, Math.PI * 2); ctx.stroke()
+  ctx.strokeStyle = 'rgba(120,180,255,.78)'; ctx.lineWidth = 2.5
+  ctx.beginPath(); ctx.arc(cx, cy, 0.27 * s, 0, Math.PI * 2); ctx.stroke()
+  const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, 0.14 * s)
+  g.addColorStop(0, '#bedeff'); g.addColorStop(0.45, 'rgba(110,156,52,.85)'); g.addColorStop(1, 'rgba(22,60,140,0)')
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, 0.14 * s, 0, Math.PI * 2); ctx.fill()
+  ctx.strokeStyle = 'rgba(92,170,255,.95)'; ctx.lineWidth = 4
+  for (let k = 0; k < 4; k++) {
+    const ang = k * Math.PI / 2
+    ctx.beginPath()
+    ctx.moveTo(cx + Math.cos(ang) * 0.44 * s, cy + Math.sin(ang) * 0.44 * s)
+    ctx.lineTo(cx + Math.cos(ang) * 0.485 * s, cy + Math.sin(ang) * 0.485 * s)
+    ctx.stroke()
+  }
+  const tex = new THREE.CanvasTexture(c); tex.needsUpdate = true; return tex
+}
+function makeBgLightTexture() {
+  const c = document.createElement('canvas'); c.width = c.height = 512
+  const ctx = c.getContext('2d'); const s = 512; const cx = s / 2, cy = s / 2
+  const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, s / 2)
+  g.addColorStop(0, 'rgba(220,235,180,.75)'); g.addColorStop(0.35, 'rgba(120,180,255,.25)'); g.addColorStop(1, 'rgba(22,60,140,0)')
+  ctx.fillStyle = g; ctx.fillRect(0, 0, s, s)
+  const g2 = ctx.createRadialGradient(cx, cy, 0, cx, cy, 0.04 * s)
+  g2.addColorStop(0, 'rgba(190,222,255,1)'); g2.addColorStop(0.6, 'rgba(40,110,230,.8)'); g2.addColorStop(1, 'rgba(15,40,100,0)')
+  ctx.fillStyle = g2; ctx.beginPath(); ctx.arc(cx, cy, 0.04 * s, 0, Math.PI * 2); ctx.fill()
+  const tex = new THREE.CanvasTexture(c); tex.needsUpdate = true; return tex
+}
+class Galaxy {
+  constructor() {
+    this.group = new THREE.Group()
+    this.group.position.z = window.innerWidth < 768 ? -0.24 : 0.3
+    this.uniforms = {
+      iTime: { value: 0 },
+      iResolution: { value: new THREE.Vector2(iResUniform.x, iResUniform.y) },
+      uAssemble: { value: 0 },
+      uOpacity: { value: 0 },
+    }
+    const count = 6000
+    const g = new THREE.BufferGeometry()
+    const pos = new Float32Array(count * 3)
+    const rnd = new Float32Array(count * 3)
+    const inside = new Float32Array(count)
+    for (let i = 0; i < count; i++) {
+      const u = Math.random() * Math.PI * 2, v = Math.acos(2 * Math.random() - 1)
+      pos[i * 3] = Math.sin(v) * Math.cos(u)
+      pos[i * 3 + 1] = Math.sin(v) * Math.sin(u)
+      pos[i * 3 + 2] = Math.cos(v)
+      rnd[i * 3] = Math.random(); rnd[i * 3 + 1] = Math.random(); rnd[i * 3 + 2] = Math.random()
+      inside[i] = i < 3500 ? 1 : -1
+    }
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3))
+    g.setAttribute('randoms', new THREE.BufferAttribute(rnd, 3))
+    g.setAttribute('inside', new THREE.BufferAttribute(inside, 1))
+    const mat = new THREE.ShaderMaterial({
+      uniforms: this.uniforms, transparent: true, depthTest: false, blending: THREE.AdditiveBlending,
+      vertexShader: `
+        attribute vec3 randoms;
+        attribute float inside;
+        uniform float iTime;
+        uniform vec2 iResolution;
+        uniform float uAssemble;
+        varying vec3 color;
+        varying float z;
+        varying float t;
+        #define POINTSIZE 40.
+        #define R_2 .34
+        #define R_2_DISTOR 2.
+        #define R_2_POINTSIZE .5
+        vec3 hsv2rgb(vec3 c) {
+          vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+          vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+          return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+        }
+        void main() {
+          float size = POINTSIZE * (1. + randoms.x);
+          t = fract(randoms.y + .2 * iTime);
+          float r = pow(.2 + min(.7, .8 * t), .3);
+          size *= pow(t,.5) * smoothstep(.8, .7, t);
+          if (inside < 0.) {
+            r = mix(R_2, .0, pow(t, R_2_DISTOR));
+            size = size * R_2_POINTSIZE;
+          }
+          float aP = smoothstep(0.0, 1.0, uAssemble);
+          float scatterScale = mix(5.0 + randoms.x * 2.0, 1.0, aP);
+          vec3 pos = position * r * scatterScale;
+          vec4 vpos = modelViewMatrix * vec4(pos, 1.);
+          float warm = step(.7, randoms.z);
+          float warmHue = mix(190., 210., randoms.x) / 360.;
+          float coolHue = mix(215., 240., randoms.y) / 360.;
+          color = hsv2rgb(vec3(mix(coolHue, warmHue, warm), .7, .7));
+          z = dot(normalize(cameraPosition), position);
+          gl_PointSize = size * iResolution.y / 900. / -vpos.z;
+          gl_Position = projectionMatrix * vpos;
+        }`,
+      fragmentShader: `
+        varying vec3 color;
+        varying float z;
+        varying float t;
+        uniform float uOpacity;
+        void main() {
+          float d = length(2. * gl_PointCoord - 1.);
+          float t2 = max(0., 2.*fract(t) - .66);
+          d = d + t2;
+          float tex = pow(smoothstep(1., .25, d), 3.);
+          float fade = clamp(.7 * z + .8, 0., 1.);
+          gl_FragColor = vec4(pow(color * tex * fade, vec3(1./2.2)), tex * uOpacity);
+        }`,
+    })
+    this.points = new THREE.Points(g, mat)
+    this.points.frustumCulled = false
+    this.points.layers.set(ENTIRE_SCENE)
+    if (window.innerWidth < 768) this.points.scale.setScalar(0.7)
+    this.group.add(this.points)
+
+    // Logo
+    const logoMat = new THREE.MeshBasicMaterial({ transparent: true, side: THREE.DoubleSide, depthTest: false, map: makeLogoTexture(), opacity: 0 })
+    this.logo = new THREE.Mesh(new THREE.PlaneGeometry(0.5, 0.5), logoMat)
+    this.logo.layers.set(ENTIRE_SCENE)
+    this.group.add(this.logo)
+
+    // BgLight
+    const bgMat = new THREE.MeshBasicMaterial({ transparent: true, side: THREE.DoubleSide, depthTest: false, map: makeBgLightTexture(), opacity: 0 })
+    this.bg = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), bgMat)
+    this.bg.position.set(0, 0, -0.1)
+    this.bg.scale.setScalar(0.8)
+    this.bg.layers.set(BLOOM_SCENE)
+    this.group.add(this.bg)
+
+    scene.add(this.group)
+    this.cur = { x: 0, y: 0 }
+  }
+  render({ progress }) {
+    this.uniforms.iTime.value = performance.now() / 1000
+    this.uniforms.uAssemble.value = progress
+    this.uniforms.uOpacity.value = Math.min(1, progress * 1.4)
+    this.logo.material.opacity = clamp01((progress - 0.4) * 2.5)
+    this.bg.material.opacity = clamp01((progress - 0.05) * 1.15)
+    this.logo.rotation.y -= 0.02
+    if (progress > 0.5) {
+      const ox = pointer.nx, oy = pointer.ny
+      this.cur.x = lerp(this.cur.x, ox, 0.05)
+      this.cur.y = lerp(this.cur.y, oy, 0.05)
+      this.points.rotation.set(this.cur.y / -2, this.cur.x / -2, 0)
+    }
+    this.group.visible = progress > 0.001
+  }
+}
+
+/* ============================================================
+   OBJECT 6 — Terrain (Roadmap/Brief)
+   ============================================================ */
+class Terrain {
+  constructor() {
+    this.group = new THREE.Group()
+    this.group.position.set(0, -0.3, 0)
+    const I = 100, J = 100
+    this.I = I; this.J = J
+    const count = I * J
+    this.count = count
+    this.hidden = new Float32Array(count * 3)
+    this.visible = new Float32Array(count * 3)
+    let idx = 0
+    for (let i = 0; i < I; i++) {
+      for (let j = 0; j < J; j++) {
+        const x = i / I * 1.8 - 0.9
+        const y = Math.random()
+        const z = j / J * 1.7 - 0.85
+        this.visible[idx * 3] = x; this.visible[idx * 3 + 1] = y; this.visible[idx * 3 + 2] = z
+        this.hidden[idx * 3] = x; this.hidden[idx * 3 + 1] = y; this.hidden[idx * 3 + 2] = 0
+        idx++
+      }
+    }
+    const g = new THREE.BufferGeometry()
+    this.posArr = new Float32Array(count * 3)
+    this.posArr.set(this.hidden)
+    this.posAttr = new THREE.BufferAttribute(this.posArr, 3)
+    g.setAttribute('position', this.posAttr)
+    this.uniforms = {
+      iAnimation: { value: 0 },
+      iTime: { value: 0 },
+      iResolution: { value: new THREE.Vector2(iResUniform.x, iResUniform.y) },
+      uAlpha: { value: 0 },
+      uWarm: { value: new THREE.Vector3(0.36, 0.62, 1.0) },
+      uCool: { value: new THREE.Vector3(0.07, 0.14, 0.34) },
+      uBrightness: { value: 1.0 },
+      uBloomAmount: { value: 0.45 },
+      uBloomWidth: { value: 1.0 },
+    }
+    const mat = new THREE.ShaderMaterial({
+      uniforms: this.uniforms, transparent: true, depthTest: false, blending: THREE.AdditiveBlending,
+      vertexShader: `
+        uniform float iAnimation;
+        uniform float iTime;
+        uniform vec2 iResolution;
+        uniform vec3 uWarm;
+        uniform vec3 uCool;
+        uniform float uBrightness;
+        varying float cameraDistance;
+        varying float z;
+        varying vec3 c;
+        vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
+        vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+        vec3 fade(vec3 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
+        float cnoise(vec3 P){
+          vec3 Pi0 = floor(P);
+          vec3 Pi1 = Pi0 + vec3(1.0);
+          Pi0 = mod(Pi0, 289.0);
+          Pi1 = mod(Pi1, 289.0);
+          vec3 Pf0 = fract(P);
+          vec3 Pf1 = Pf0 - vec3(1.0);
+          vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
+          vec4 iy = vec4(Pi0.yy, Pi1.yy);
+          vec4 iz0 = Pi0.zzzz;
+          vec4 iz1 = Pi1.zzzz;
+          vec4 ixy = permute(permute(ix) + iy);
+          vec4 ixy0 = permute(ixy + iz0);
+          vec4 ixy1 = permute(ixy + iz1);
+          vec4 gx0 = ixy0 / 7.0;
+          vec4 gy0 = fract(floor(gx0) / 7.0) - 0.5;
+          gx0 = fract(gx0);
+          vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
+          vec4 sz0 = step(gz0, vec4(0.0));
+          gx0 -= sz0 * (step(0.0, gx0) - 0.5);
+          gy0 -= sz0 * (step(0.0, gy0) - 0.5);
+          vec4 gx1 = ixy1 / 7.0;
+          vec4 gy1 = fract(floor(gx1) / 7.0) - 0.5;
+          gx1 = fract(gx1);
+          vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
+          vec4 sz1 = step(gz1, vec4(0.0));
+          gx1 -= sz1 * (step(0.0, gx1) - 0.5);
+          gy1 -= sz1 * (step(0.0, gy1) - 0.5);
+          vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
+          vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
+          vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
+          vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
+          vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
+          vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
+          vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
+          vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
+          vec4 norm0 = taylorInvSqrt(vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110)));
+          g000 *= norm0.x;
+          g010 *= norm0.y;
+          g100 *= norm0.z;
+          g110 *= norm0.w;
+          vec4 norm1 = taylorInvSqrt(vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111)));
+          g001 *= norm1.x;
+          g011 *= norm1.y;
+          g101 *= norm1.z;
+          g111 *= norm1.w;
+          float n000 = dot(g000, Pf0);
+          float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
+          float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
+          float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
+          float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
+          float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
+          float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
+          float n111 = dot(g111, Pf1);
+          vec3 fade_xyz = fade(Pf0);
+          vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
+          vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
+          float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x);
+          return 2.2 * n_xyz;
+        }
+        const mat2 m2 = mat2(0.8,-0.6,0.6,0.8);
+        float fbm( in vec3 p ){
+          float f = 0.0;
+          f += 0.55000 * cnoise(p);
+          p.xz = m2 * p.xz * 2.02;
+          f += 0.050 * cnoise(p);
+          p.xz = m2 * p.xz * 2.05;
+          f += 0.350 * cnoise(p);
+          return f;
+        }
+        vec2 wnoise(vec2 pos, float t, float curv) {
+          pos.x += curv * sin(2.0*t+1.5 * pos.y)+t*0.5;
+          pos.y += curv * cos(2.0*t+1.5 * pos.x);
+          return 0.5 + 0.5*cos(pos.xy+vec2(0,2));
+        }
+        vec3 hsv2rgb(vec3 c) {
+          vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+          vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+          return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+        }
+        void main() {
+          vec3 v = position;
+          float anim1 = clamp(iAnimation, 0., 1.);
+          float anim2 = clamp(iAnimation-1., 0., 1.);
+          v.z = fract(v.z + anim1);
+          v.x = fract(v.x + anim2);
+          v.x = 4. * (v.x * 1.6 - 0.8);
+          v.z = 4. * (v.z * 1.3 - 0.65);
+          v.y = .65 * (clamp(abs((v.x)/2. + 2. - 2.4 * anim2), 0., 1.))
+                    * fbm(.5 * (v - vec3(.6 * iTime + 6.4 * anim2, 0., 5.2 * anim1))) - .2 * v.x;
+          v.x -= .3 * v.z - .3;
+          vec2 h = wnoise(8.*(position.xy - vec2(iTime/10.6, 0.)), 0., .4);
+          float hue = (h.x+h.y)/2.;
+          float fade = cnoise(5.*(vec3(position.xz, 0.) - vec3(iTime/10.6, 0., 0.))) * 1.3 + 0.7;
+          float warm = step(.7, hue);
+          c = mix(uCool, uWarm, warm) * fade * uBrightness;
+          vec4 mvpos = modelViewMatrix * vec4(v, 1.);
+          z = v.z;
+          cameraDistance = length(cameraPosition - v);
+          gl_PointSize = 17.5 * iResolution.y / 730. / -mvpos.z;
+          gl_Position = projectionMatrix * mvpos;
+        }`,
+      fragmentShader: `
+        varying float cameraDistance;
+        varying float z;
+        varying vec3 c;
+        uniform float uAlpha;
+        uniform float uBloomAmount;
+        uniform float uBloomWidth;
+        void main() {
+          float pd = length(2. * gl_PointCoord - 1.);
+          float d0 = .3;
+          float d = max(0., pd - d0) * max(.3, 1.5 * cameraDistance) * 8.;
+          float core = pow(2.71828, -d*d / 2.) / 2.506628;
+          float halo = pow(max(0., 1. - pd / max(0.001, uBloomWidth)), 2.5) * uBloomAmount;
+          float tex = core + halo;
+          float depthFade = min(1., (-z + 2.7) / 1.3) * (z + 2.7) / 1.3;
+          gl_FragColor = vec4(tex * c * 1.8, tex * depthFade) * uAlpha;
+        }`,
+    })
+    this.mesh = new THREE.Points(g, mat)
+    this.mesh.frustumCulled = false
+    this.mesh.layers.set(ENTIRE_SCENE)
+    this.group.add(this.mesh)
+    scene.add(this.group)
+    this.lastProgress = -1
+  }
+  render({ progress, iAnim }) {
+    this.uniforms.iTime.value = performance.now() / 1000
+    this.uniforms.iAnimation.value = iAnim
+    this.uniforms.uAlpha.value = progress
+    if (Math.abs(progress - this.lastProgress) > 0.002) {
+      for (let i = 0; i < this.count; i++) {
+        this.posArr[i * 3] = lerp(this.hidden[i * 3], this.visible[i * 3], progress)
+        this.posArr[i * 3 + 1] = lerp(this.hidden[i * 3 + 1], this.visible[i * 3 + 1], progress)
+        this.posArr[i * 3 + 2] = lerp(this.hidden[i * 3 + 2], this.visible[i * 3 + 2], progress)
+      }
+      this.posAttr.needsUpdate = true
+      this.lastProgress = progress
+    }
+    this.group.visible = progress > 0.001
+  }
+}
+
+/* ============================================================
+   OBJECT 8 — Cosmos / rising star sphere (Impact)
+   ============================================================ */
+const texLoader = new THREE.TextureLoader()
+const ASSET_BASE = 'https://api.getlayers.ai/storage/v1/object/public/public/assets/helios-1d900eeeb8'
+class Cosmos {
+  constructor() {
+    this.group = new THREE.Group()
+    this.group.position.set(0, -5, -8)
+
+    this.sphereGroup = new THREE.Group()
+    this.sphereGroup.position.set(0, -0.4, 0)
+    this.sphereGroup.scale.setScalar(2)
+
+    const sphereMat = new THREE.MeshStandardMaterial({ color: 0x020202, side: THREE.DoubleSide })
+    this.sphere = new THREE.Mesh(new THREE.SphereBufferGeometry(2, 50, 50), sphereMat)
+    this.sphere.layers.set(BLOOM_SCENE)
+    this.sphereGroup.add(this.sphere)
+
+    // stars
+    this.starUniforms = {
+      iTime: { value: 0 },
+      iResolution: { value: new THREE.Vector2(iResUniform.x, iResUniform.y) },
+    }
+    const starCount = 20000
+    const g = new THREE.BufferGeometry()
+    const pos = new Float32Array(starCount * 3)
+    const size = new Float32Array(starCount)
+    for (let i = 0; i < starCount; i++) {
+      pos[i * 3] = Math.random(); pos[i * 3 + 1] = Math.random(); pos[i * 3 + 2] = Math.random()
+      size[i] = (0.7 + 0.7 * Math.random()) * 0.55
+    }
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3))
+    g.setAttribute('size', new THREE.BufferAttribute(size, 1))
+    const starMat = new THREE.ShaderMaterial({
+      uniforms: this.starUniforms, transparent: true, depthTest: false, blending: THREE.AdditiveBlending,
+      vertexShader: `
+        attribute float size;
+        uniform float iTime;
+        uniform vec2 iResolution;
+        varying vec3 col;
+        varying float fade;
+        #define SIZE 40.
+        vec3 warp3d(vec3 pos, float t) {
+          float curv = 0.9, a = 1.9, b = 0.003, c = 0.003;
+          pos.x += curv * sin(c * t + a * pos.y) + t * b;
+          pos.y += curv * cos(c * t + a * pos.x);
+          pos.y += curv * sin(c * t + a * pos.z) + t * b;
+          pos.z += curv * cos(c * t + a * pos.y);
+          pos.z += curv * sin(c * t + a * pos.x) + t * b;
+          pos.x += curv * cos(c * t + a * pos.z);
+          return pos.xyz / 1.9;
+        }
+        vec3 warp3s(vec3 pos, float t) {
+          float curv = 1.3, a = 1.9, b = 0.08, c = 0.05;
+          pos /= 2.;
+          pos.x += curv * sin(c * t + a * pos.y) + t * b;
+          pos.y += curv * cos(c * t + a * pos.x);
+          pos.y += curv * sin(c * t + a * pos.z) + t * b;
+          pos.z += curv * cos(c * t + a * pos.y);
+          pos.z += curv * sin(c * t + a * pos.x) + t * b;
+          pos.x += curv * cos(c * t + a * pos.z);
+          return cos(pos.xyz / 1.9 * 3.1415 + vec3(1,3,5));
+        }
+        vec4 qmult(vec4 p, vec4 q) {
+          vec3 pv = p.xyz, qv = q.xyz;
+          return vec4(p.w * qv + q.w * pv + cross(pv, qv), p.w * q.w - dot(pv, qv));
+        }
+        vec3 rotate(vec3 point, vec4 qrotor) {
+          vec3 rv = qrotor.xyz;
+          return qmult(qrotor, vec4(point * qrotor.w - cross(point, rv), dot(point, rv))).xyz;
+        }
+        vec2 wnoise2(vec2 pos, float t, float curv) {
+          pos.x += curv * sin(2.0*t+1.5 * pos.y)+t*0.5;
+          pos.y += curv * cos(2.0*t+1.5 * pos.x);
+          return 0.5 + 0.5*cos(iTime+pos.xy+vec2(0,2));
+        }
+        vec3 hsv2rgb(vec3 c) {
+          vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+          vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+          return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+        }
+        void main() {
+          col = position;
+          vec3 v = position;
+          vec3 w = warp3d(2. * v - 1., .85*iTime);
+          float a = w.x * 6.2831853;
+          float b = acos(2. * w.y - 1.);
+          float r = pow(w.z, 1./3.);
+          float x = r * sin(b) * cos(a);
+          float y = r * sin(b) * sin(a);
+          float z = r * cos(b);
+          v = vec3(x, y, z);
+          vec3 s = warp3s(v, .85*iTime);
+          v = mix(v, s, 0.15);
+          vec3 i = vec3(sin(5. * iTime * .005), sin( 7. * iTime * .005), sin(13. * iTime * .005)) * .5 + .5;
+          vec4 q = vec4(sqrt(1. - 0.6 * i.x) * sin(6.2831853 * i.y), sqrt(1. - 0.6 * i.x) * cos(6.2831853 * i.y),
+                        sqrt(0.6 * i.x) * sin(6.2831853 * i.z), sqrt(0.6 * i.x) * cos(6.2831853 * i.z));
+          v = rotate(v.yxz, q);
+          v = .988 * normalize(v);
+          fade = v.z * .35 + .65;
+          v = 2. * (v - vec3(0, 1, 0));
+          vec4 mvpos = modelViewMatrix * vec4(v, 1.);
+          gl_PointSize = SIZE * size * iResolution.y / 730. / -mvpos.z;
+          gl_Position = projectionMatrix * mvpos;
+          vec2 h = wnoise2(v.xy*3., iTime*.01, .4);
+          float hue = (h.x+h.y)/2.;
+          float warm = step(.75, hue);
+          float warmHue = .53 + .05 * hue;
+          float coolHue = .60 + .06 * hue;
+          col = hsv2rgb(vec3(mix(coolHue, warmHue, warm), 0.75, 0.60)) * fade;
+        }`,
+      fragmentShader: `
+        varying vec3 col;
+        uniform vec2 iResolution;
+        void main() {
+          float tex = pow(smoothstep(1., .2, length(2. * gl_PointCoord - 1.)), 3.);
+          gl_FragColor = vec4(tex * col, tex );
+        }`,
+    })
+    this.stars = new THREE.Points(g, starMat)
+    this.stars.frustumCulled = false
+    this.stars.layers.set(ENTIRE_SCENE)
+    this.sphereGroup.add(this.stars)
+
+    this.group.add(this.sphereGroup)
+
+    // directional light
+    this.light = new THREE.DirectionalLight()
+    this.light.color.setRGB(0.25, 0.55, 0.25)
+    this.light.intensity = 1
+    this.light.position.set(0, 5, -10)
+    this.light.layers.set(BLOOM_SCENE)
+    this.group.add(this.light)
+
+    // BgLight plane
+    const bgTex = texLoader.load(ASSET_BASE + '/light-8.png')
+    bgTex.crossOrigin = 'anonymous'
+    const bgMat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.9, side: THREE.DoubleSide, map: bgTex })
+    this.bg = new THREE.Mesh(new THREE.PlaneGeometry(4.5, 5), bgMat)
+    this.bg.scale.setScalar(1.5)
+    this.bg.position.set(0, -3.7, -1)
+    this.bg.layers.set(BLOOM_SCENE)
+    this.group.add(this.bg)
+
+    scene.add(this.group)
+  }
+  render({ progress }) {
+    const t = performance.now() / 1000
+    this.starUniforms.iTime.value = performance.now()
+    this.group.position.lerpVectors(new THREE.Vector3(0, -5, -8), new THREE.Vector3(0, 0, 0), progress)
+    this.sphere.rotation.y = 0.15 * t
+    this.group.visible = progress > 0.001
+  }
+}
+
+/* ============================================================
+   FLY POINT PASS — global flying points
+   ============================================================ */
+class FlyPoints {
+  constructor() {
+    this.uniforms = {
+      iTime: { value: 0 },
+      iShift: { value: new THREE.Vector3(0, 0, 0) },
+      iAlpha: { value: 0 },
+      iAnimation: { value: new THREE.Vector3(0, 0, 10) },
+      iResolution: { value: new THREE.Vector2(iResUniform.x, iResUniform.y) },
+    }
+    const count = 200
+    const g = new THREE.BufferGeometry()
+    const pos = new Float32Array(count * 3)
+    const size = new Float32Array(count)
+    for (let i = 0; i < count; i++) {
+      pos[i * 3] = 2 * Math.random() - 1
+      pos[i * 3 + 1] = 2 * Math.random() - 1
+      pos[i * 3 + 2] = 2 * Math.random() - 1
+      size[i] = 25 + 25 * Math.random()
+    }
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3))
+    g.setAttribute('size', new THREE.BufferAttribute(size, 1))
+    const mat = new THREE.ShaderMaterial({
+      uniforms: this.uniforms, transparent: true, depthTest: false, blending: THREE.AdditiveBlending,
+      vertexShader: `
+        attribute float size;
+        uniform float iTime;
+        uniform vec3 iShift;
+        uniform vec2 iResolution;
+        uniform vec3 iAnimation;
+        varying float transparency;
+        varying float warmness;
+        vec3 warp3d(vec3 pos, float t) {
+          float curv = 0.9, a = 1.9, b = 0.25, b2 = 0.03, c = 0.02;
+          pos *= 2.;
+          pos.x += curv * sin(c * t + a * pos.y) + t * b2;
+          pos.y += curv * cos(c * t + a * pos.x);
+          pos.z += curv * cos(c * t + a * pos.y);
+          pos.z += curv * sin(c * t + a * pos.x) + t * b;
+          pos.z = abs( pos.z );
+          return pos.xyz;
+        }
+        void main() {
+          vec3 v = warp3d(position, iTime);
+          v = 3. * (2. * fract(v + iShift) - 1.) + iAnimation;
+          vec4 vpos = modelViewMatrix * vec4(v, 1.);
+          transparency = step(length(v), 3.);
+          warmness = step(.75, fract(size * 7.13));
+          gl_PointSize = size * iResolution.y / 1000. / -vpos.z;
+          gl_Position = projectionMatrix * vpos;
+        }`,
+      fragmentShader: `
+        varying float transparency;
+        varying float warmness;
+        uniform float iAlpha;
+        void main() {
+          vec3 cool = vec3(.08, .16, .38) * .8;
+          vec3 warm = vec3(.28, .55, .95) * .8;
+          vec3 color = mix(cool, warm, warmness);
+          float tex = smoothstep(1., .3, length(2. * gl_PointCoord - 1.));
+          gl_FragColor = vec4(tex * color, tex * transparency * iAlpha );
+        }`,
+    })
+    this.points = new THREE.Points(g, mat)
+    this.points.frustumCulled = false
+    this.points.position.set(0, 0, -1)
+    this.points.layers.set(ENTIRE_SCENE)
+    scene.add(this.points)
+    this.targets = {
+      hero: { o: 1, x: 0, y: 0, z: 0 },
+      sitemap: { o: 0, x: 0, y: 0, z: 10 },
+      roadmap: { o: 1, x: 0, y: 3, z: 0 },
+    }
+  }
+  render({ sceneProgress }) {
+    const t = performance.now() / 1000
+    this.uniforms.iTime.value = t
+    this.uniforms.iShift.value.addScaledVector(camera.position, 0.0022)
+    let ow = 0, o = 0, x = 0, y = 0, z = 0
+    for (const key of ['hero', 'sitemap', 'roadmap']) {
+      const w = sceneProgress[key] || 0
+      if (w <= 0) continue
+      const tg = this.targets[key]
+      ow += w
+      o += tg.o * w; x += tg.x * w; y += tg.y * w; z += tg.z * w
+    }
+    if (ow > 0) { o /= ow; x /= ow; y /= ow; z /= ow } else { o = 0 }
+    if (o > 0.001) {
+      this.uniforms.iAlpha.value = o
+      this.uniforms.iAnimation.value.set(x, y, z)
+    } else {
+      this.uniforms.iAlpha.value = o
+    }
+    this.points.visible = o > 0.001
+  }
+}
+
+/* ============================================================
+   Instantiate scene objects
+   ============================================================ */
+const preloader = new Preloader()
+const wave = new Wave()
+const galaxy = new Galaxy()
+const terrain = new Terrain()
+const cosmos = new Cosmos()
+const flyPoints = new FlyPoints()
+
+/* ============================================================
+   Loaded transition
+   ============================================================ */
+let isLoaded = false
+function onLoaded() {
+  if (isLoaded) return
+  isLoaded = true
+  const controller = document.querySelector('.controller')
+  controller.classList.remove('-not-loaded')
+  controller.classList.add('-loaded')
+  const heroSlide = document.querySelector('[data-slide-id="hero"]')
+  if (heroSlide) heroSlide.classList.add('-active')
+  const loaderEl = document.querySelector('.scene-loader')
+  if (loaderEl) { loaderEl.style.transition = 'opacity .5s'; loaderEl.style.opacity = '0' }
+}
+
+/* ============================================================
+   Scroll -> progress mapping / active screen
+   ============================================================ */
+const slideEls = Array.from(document.querySelectorAll('[data-slide-id]'))
+const slideIds = slideEls.map(el => el.getAttribute('data-slide-id'))
+let smoothedScrollY = window.scrollY
+let activeScreen = 'hero'
+let prevActive = 'hero'
+
+function computeProgress() {
+  const vh = window.innerHeight
+  if (isTouch()) {
+    const gap = window.scrollY - smoothedScrollY
+    if (Math.abs(gap) > vh * 1.5) smoothedScrollY = window.scrollY
+    else smoothedScrollY = lerp(smoothedScrollY, window.scrollY, 0.08)
+  } else {
+    smoothedScrollY = window.scrollY
+  }
+  const cy = smoothedScrollY + vh * 0.5
+  const fadeBuffer = vh
+  const sceneProgress = {}
+  const slideLocal = {}
+  const ranges = {}
+  for (const el of slideEls) {
+    const id = el.getAttribute('data-slide-id')
+    const rect = el.getBoundingClientRect()
+    const minTop = rect.top + window.scrollY
+    const maxBot = minTop + rect.height
+    ranges[id] = { minTop, maxBot }
+    const center = (minTop + maxBot) / 2
+    const halfH = (maxBot - minTop) / 2
+    const plateauHalf = Math.max(0, halfH - fadeBuffer / 2)
+    const dist = Math.abs(cy - center)
+    let sp = dist <= plateauHalf ? 1 : Math.max(0, 1 - (dist - plateauHalf) / fadeBuffer)
+    sceneProgress[id] = sp
+    const stuck = Math.max(1, (maxBot - minTop) - vh)
+    slideLocal[id] = clamp01((smoothedScrollY - minTop) / stuck)
+    el.style.setProperty('--scene-progress', sp.toFixed(3))
+    el.style.setProperty('--slide-local', slideLocal[id].toFixed(3))
+  }
+  // active screen with hysteresis
+  const HYST = vh * 0.06
+  const curRange = ranges[activeScreen]
+  if (curRange && cy >= curRange.minTop - HYST && cy < curRange.maxBot + HYST) {
+    // stay
+  } else {
+    let picked = null
+    for (const id of slideIds) {
+      const r = ranges[id]
+      if (cy >= r.minTop && cy < r.maxBot) { picked = id; break }
+    }
+    if (!picked) {
+      // nearest center past the last slide
+      let best = slideIds[0], bestD = Infinity
+      for (const id of slideIds) {
+        const r = ranges[id]
+        const c = (r.minTop + r.maxBot) / 2
+        const d = Math.abs(cy - c)
+        if (d < bestD) { bestD = d; best = id }
+      }
+      picked = best
+    }
+    activeScreen = picked
+  }
+  if (activeScreen !== prevActive) {
+    slideEls.forEach(el => el.classList.toggle('-active', el.getAttribute('data-slide-id') === activeScreen))
+    if (activeScreen === 'sitemap') triggerSitemapReveal()
+    prevActive = activeScreen
+  }
+  // header --nav toggle: reveal once past hero/sitemap
+  const header = document.querySelector('.header')
+  if (activeScreen !== 'hero' && activeScreen !== 'sitemap') header.classList.add('--nav')
+  else header.classList.remove('--nav')
+
+  return { sceneProgress, slideLocal }
+}
+
+/* ============================================================
+   Sitemap reveal (rAF)
+   ============================================================ */
+let sitemapRevealed = false
+function triggerSitemapReveal() {
+  if (sitemapRevealed) return
+  sitemapRevealed = true
+  const mobile = window.innerWidth < 768
+  const queue = [
+    ['.sitemap__eyebrow', 0, 36],
+    ['.sitemap__heading', 60, 36],
+  ]
+  if (mobile) queue.push(['.sitemap__content', 100, 0])
+  queue.push(
+    ['.sitemap__row_1', 180, 36],
+    ['.sitemap__row_2', 240, 36],
+    ['.sitemap__row_3', 300, 36],
+    ['.sitemap__join', 380, 36],
+  )
+  for (const [sel, delay, rise] of queue) {
+    const el = document.querySelector(sel)
+    if (el) animateReveal(el, { delay, duration: 650, rise: mobile ? 0 : rise })
+  }
+}
+function animateReveal(el, { delay, duration, rise }) {
+  el.style.opacity = 0
+  el.style.transform = rise ? `translate3d(0, ${rise}px, 0)` : 'none'
+  const start = performance.now() + delay
+  function step(now) {
+    if (now < start) { requestAnimationFrame(step); return }
+    let t = clamp01((now - start) / duration)
+    const e = 1 - Math.pow(1 - t, 4)
+    el.style.opacity = e
+    if (rise) el.style.transform = `translate3d(0, ${(1 - e) * rise}px, 0)`
+    if (t < 1) requestAnimationFrame(step)
+  }
+  requestAnimationFrame(step)
+}
+
+/* Sitemap desktop cursor parallax */
+const sitemapContent = document.querySelector('.sitemap__content')
+const cur = { x: 0, y: 0 }
+
+/* ============================================================
+   Brief + Impact IntersectionObservers
+   ============================================================ */
+const briefObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('-in'); briefObserver.unobserve(e.target) } })
+}, { rootMargin: '0px 0px -20% 0px' })
+document.querySelectorAll('.brief__reveal').forEach(el => briefObserver.observe(el))
+
+const impactObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('-in'); impactObserver.unobserve(e.target) } })
+}, { rootMargin: '0px 0px -15% 0px' })
+document.querySelectorAll('.impact__reveal').forEach(el => impactObserver.observe(el))
+
+/* ============================================================
+   Navigation (data-go)
+   ============================================================ */
+function scrollToSlide(id) {
+  let el = document.querySelector(`[data-slide-id="${id}"]`)
+  if (!el) el = document.querySelector('[data-slide-id="sitemap"]') // fallback
+  if (!el) return
+  const top = el.getBoundingClientRect().top + window.scrollY
+  lenis.scrollTo(top, { duration: 1.4 })
+}
+document.querySelectorAll('[data-go]').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault()
+    const id = btn.getAttribute('data-go')
+    scrollToSlide(id)
+    closeMenu()
+  })
+})
+
+/* ============================================================
+   Mobile menu
+   ============================================================ */
+const menu = document.getElementById('menu')
+const header = document.querySelector('.header')
+const burger = document.querySelector('.header__burgermenu')
+let menuOpen = false
+function openMenu() { menuOpen = true; menu.classList.add('--active'); header.classList.add('--menu-active'); document.body.classList.add('--menu-locked'); lenis.stop() }
+function closeMenu() { if (!menuOpen) return; menuOpen = false; menu.classList.remove('--active'); header.classList.remove('--menu-active'); document.body.classList.remove('--menu-locked'); lenis.start() }
+burger.addEventListener('click', () => { menuOpen ? closeMenu() : openMenu() })
+
+/* ============================================================
+   Resize
+   ============================================================ */
+function onResize() {
+  W = sceneEl.clientWidth || window.innerWidth; Hh = sceneEl.clientHeight || window.innerHeight
+  renderer.setSize(W, Hh, false)
+  camera.aspect = window.innerWidth / window.innerHeight
+  camera.updateProjectionMatrix()
+  torusComposer.setSize(W, Hh)
+  bloomComposer.setSize(W, Hh)
+  finalComposer.setSize(W, Hh)
+  const px = renderer.getPixelRatio()
+  const rx = W * px, ry = Hh * px
+  ;[preloader.uniforms.iResolution, galaxy.uniforms.iResolution, terrain.uniforms.iResolution, cosmos.starUniforms.iResolution, flyPoints.uniforms.iResolution]
+    .forEach(u => u.value.set(rx, ry))
+}
+if (!isTouch()) {
+  let resizePending = false
+  const handler = () => { if (!resizePending) { resizePending = true; requestAnimationFrame(() => { resizePending = false; onResize() }) } }
+  window.addEventListener('resize', handler)
+  window.addEventListener('orientationchange', handler)
+}
+
+/* ============================================================
+   Main render loop
+   ============================================================ */
+let lastTime = performance.now()
+function animate() {
+  requestAnimationFrame(animate)
+  const now = performance.now()
+  const dt = Math.min(0.05, (now - lastTime) / 1000)
+  lastTime = now
+
+  const { sceneProgress } = computeProgress()
+  const heroProg = sceneProgress.hero || 0
+  const sitemapProg = sceneProgress.sitemap || 0
+  const briefProg = sceneProgress.roadmap || 0
+  const briefLocal = document.querySelector('[data-slide-id="roadmap"]')
+    ? parseFloat(document.querySelector('[data-slide-id="roadmap"]').style.getPropertyValue('--slide-local') || 0) : 0
+  const impactProg = sceneProgress.impact || 0
+
+  wave.render({ progress: heroProg, disperseProgress: 1 - heroProg }, dt)
+  galaxy.render({ progress: sitemapProg })
+  terrain.render({ progress: briefProg, iAnim: briefLocal * 2 })
+  cosmos.render({ progress: impactProg })
+  flyPoints.render({ sceneProgress })
+
+  if (!preloader.done) preloader.render({ destroy: isLoaded })
+
+  // sitemap desktop cursor parallax
+  if (sitemapContent && window.innerWidth >= 768) {
+    cur.x = lerp(cur.x, pointer.x - window.innerWidth / 2, 0.1)
+    cur.y = lerp(cur.y, pointer.y - window.innerHeight / 2, 0.1)
+    sitemapContent.style.transform = `translate(${cur.x / -10}px, ${cur.y / -10}px)`
+  }
+
+  // FinalPass time
+  finalPass.uniforms.iTime.value = performance.now() / 1000
+
+  // render three composers
+  camera.layers.set(TORUS_SCENE)
+  torusComposer.render()
+  camera.layers.set(BLOOM_SCENE)
+  bloomComposer.render()
+  camera.layers.set(ENTIRE_SCENE)
+  finalComposer.render()
+}
+animate()
+</script>
+</body>
+</html>
