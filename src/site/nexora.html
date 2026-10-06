@@ -2048,7 +2048,7 @@ const nLogo = (() => {
       const mobile = window.innerWidth < 768
       const ampX = (mobile ? 0.35 : 0.9) * Math.min(1, camera.aspect / 1.6)
       const x = Math.sin(st.p * Math.PI * 5 + Math.PI / 2) * ampX
-      const y = 0.75 - st.p * 1.5
+      const y = 0.45 - st.p * 1.1
       group.position.set(x + pointer.nx * 0.04, y + pointer.ny * 0.03, 0.6)
       st.rotZ = lerp(st.rotZ, -Math.cos(st.p * Math.PI * 5 + Math.PI / 2) * 0.35 - vel * 0.6, 0.1)
       group.rotation.set(0.25 + Math.sin(performance.now() / 1400) * 0.08, performance.now() / 1800 + st.p * Math.PI * 4, st.rotZ)
