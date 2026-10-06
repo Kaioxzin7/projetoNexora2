@@ -2018,6 +2018,44 @@ if (!isTouch()) {
 /* ============================================================
    Main render loop
    ============================================================ */
+/* ---------------- Scroll-guided 3D "N" ---------------- */
+const nLogo = (() => {
+  const s = new THREE.Shape()
+  const w = 0.12, h = 0.5, x0 = -0.21, x1 = 0.21
+  s.moveTo(x0, -h / 2); s.lineTo(x0 + w, -h / 2); s.lineTo(x0 + w, h / 2 - 0.2)
+  s.lineTo(x1 - w, -h / 2); s.lineTo(x1, -h / 2); s.lineTo(x1, h / 2)
+  s.lineTo(x1 - w, h / 2); s.lineTo(x1 - w, -h / 2 + 0.2); s.lineTo(x0 + w, h / 2)
+  s.lineTo(x0, h / 2); s.lineTo(x0, -h / 2)
+  const geo = new THREE.ExtrudeGeometry(s, { depth: 0.08, bevelEnabled: true, bevelThickness: 0.015, bevelSize: 0.012, bevelSegments: 3 })
+  geo.center()
+  const group = new THREE.Group()
+  const body = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0x2f6fd6, transparent: true, opacity: 0.9 }))
+  body.layers.set(ENTIRE_SCENE)
+  const edges = new THREE.LineSegments(new THREE.EdgesGeometry(geo, 20), new THREE.LineBasicMaterial({ color: 0xbedeff }))
+  edges.layers.set(ENTIRE_SCENE)
+  const glow = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0x00d4ff }))
+  glow.layers.set(BLOOM_SCENE)
+  group.add(body, edges, glow)
+  group.scale.setScalar(window.innerWidth < 768 ? 0.45 : 0.6)
+  scene.add(group)
+  const st = { p: 0, rotZ: 0, last: 0 }
+  return {
+    update(dt) {
+      const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight)
+      const target = clamp01(window.scrollY / max)
+      st.p = lerp(st.p, target, 0.08)
+      const vel = (st.p - st.last) / Math.max(dt, 0.001); st.last = st.p
+      const mobile = window.innerWidth < 768
+      const ampX = (mobile ? 0.35 : 0.9) * Math.min(1, camera.aspect / 1.6)
+      const x = Math.sin(st.p * Math.PI * 5 + Math.PI / 2) * ampX
+      const y = 0.45 - st.p * 1.1
+      group.position.set(x + pointer.nx * 0.04, y + pointer.ny * 0.03, 0.6)
+      st.rotZ = lerp(st.rotZ, -Math.cos(st.p * Math.PI * 5 + Math.PI / 2) * 0.35 - vel * 0.6, 0.1)
+      group.rotation.set(0.25 + Math.sin(performance.now() / 1400) * 0.08, performance.now() / 1800 + st.p * Math.PI * 4, st.rotZ)
+    },
+  }
+})()
+
 let lastTime = performance.now()
 function animate() {
   requestAnimationFrame(animate)
@@ -2038,6 +2076,7 @@ function animate() {
   terrain.render({ progress: briefProg, iAnim: briefLocal * 2 })
   cosmos.render({ progress: impactProg })
   flyPoints.render({ sceneProgress })
+  nLogo.update(dt)
 
   if (!preloader.done) preloader.render({ destroy: isLoaded })
 
